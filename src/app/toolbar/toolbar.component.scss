@@ -1,0 +1,46 @@
+.spacer {
+    flex: 1;
+}
+
+.toolbar {
+    //   position: absolute;
+
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+
+    background: rgb(0, 0, 0);
+    background: linear-gradient(180deg, rgba(40, 40, 40, 1) 0%, rgba(57, 57, 57, 1) 50%, rgba(40, 40, 40, 1) 100%);
+    color: white;
+
+
+}
+
+.toolbar img {
+    margin: 0 16px;
+    cursor: pointer;
+}
+
+.toolbar #user-account {
+    height: 40px;
+    margin: 0 16px;
+    fill: #fff;
+    cursor: pointer;
+}
+
+.toolbar #user-account:hover {
+    fill: #f1bb41;
+}
+
+.login_btn {
+    margin: 0 16px;
+    cursor: pointer;
+}
+
+.login_btn:hover {
+    color: #f1bb41;
+}

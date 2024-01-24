@@ -1,0 +1,61 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+
+    .changeForm_btn {
+        cursor: pointer;
+    }
+
+    .changeForm_btn:hover {
+        font-weight: bold;
+    }
+
+    .register_form {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+
+        mat-form-field {
+            display: flex;
+        }
+    }
+
+    .login_form {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+
+        mat-error {
+            font-size: 0.9em;
+            margin-bottom: 1em;
+
+            max-width: 100%;
+            /* Limit the width of the error message container */
+            white-space: normal;
+        }
+    }
+
+    .register-tooltip {
+        white-space: pre-line;
+    }
+
+    .password-requirements .passed {
+        list-style-image: url(../../../assets/svgs/check.svg);
+        color: rgba(80, 79, 79)
+    }
+
+    .password-requirements .failed {
+        list-style-image: url(../../../assets/svgs/failed.svg);
+    }
+
+    .registrationMessage {
+        cursor: default;
+        margin: 1vh;
+        text-align: center;
+    }
+
+
+}

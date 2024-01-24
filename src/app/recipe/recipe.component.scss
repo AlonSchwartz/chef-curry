@@ -1,0 +1,113 @@
+.container {
+
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    gap: 10px;
+
+    text-align: center;
+
+    background-image: url('../../assets/background5.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+    min-height: 94dvh;
+
+
+    li {
+        list-style: none;
+        text-align: center;
+
+    }
+
+    .instructions {
+        ul {
+            list-style-position: inside;
+        }
+
+        li {
+            list-style: decimal;
+            text-align: left;
+            padding-bottom: 5px;
+        }
+
+        li::marker {
+            color: red;
+        }
+    }
+
+    .actions {
+        mat-icon {
+            cursor: pointer;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+
+        .btn_love {
+            cursor: pointer;
+            transform: rotateY(0deg);
+            transition: transform 0.3s, color 0.3s;
+        }
+
+        .btn_love.clicked {
+            transform: rotateY(360deg);
+            color: red;
+            cursor: default;
+        }
+
+
+    }
+
+    .content {
+        align-items: center; //can be deleted
+    }
+
+    .loading-recipe {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        transform: translate(-50%, -50%);
+
+        #logo2 {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 45%;
+            animation: spin 5s linear infinite, pause 2s;
+        }
+
+    }
+
+}
+
+@keyframes heartbeat {
+    0% {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+
+    0%,
+    100% {
+        transform: rotateY(0deg);
+    }
+
+    50% {
+        transform: rotateY(180deg);
+    }
+
+    75%,
+    100% {
+        transform: rotateY(360deg);
+    }
+}

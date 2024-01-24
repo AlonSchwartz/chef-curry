@@ -1,0 +1,64 @@
+.container {
+
+    display: grid;
+    grid-template-columns: 1fr 10fr 1fr;
+
+    justify-content: center;
+    /* Horizontally center the sections */
+
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+
+    .sections {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        /* Center items vertically */
+        align-items: center;
+        /* Center items horizontally */
+        //padding: 5px;
+
+    }
+
+    .section {
+        width: 33.33%;
+        /* Each section takes up one-third of the container width */
+        text-align: center;
+        /* Center the text within the header */
+
+        height: 100%;
+        /* Adjust the height as needed */
+
+        box-sizing: border-box;
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 1vh;
+
+        }
+
+        p {
+            margin-bottom: 1vh;
+            height: 18%;
+            font-size: 1.5vh;
+            padding: 0px 2px 0px 2px;
+
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 2vh;
+            flex: 1 1 50%;
+            width: 220px;
+            height: 220px;
+        }
+
+        button {
+            color: #333;
+        }
+
+    }
+
+}

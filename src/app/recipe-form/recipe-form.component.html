@@ -1,0 +1,87 @@
+<div class="container" [class.blur]="isCreating">
+    <div class="spacer"></div>
+    <div class="recipe-creator" *ngIf="!isCreating">
+        <div class="header">
+            <img id="logo" src="assets/logo2.png" alt="curry-logo">
+            <h2>Flavors in Your Hands: Design Your Custom Dish</h2>
+
+        </div>
+        <div class="form">
+            <form [formGroup]="form">
+                <section class="my-theme">
+                    <label>Recommend me a curry dish:</label>
+                    <mat-radio-group formControlName="withAdditionalIngredients" class="test-radio">
+                        <!-- add form control -->
+                        <mat-radio-button [value]="true">with</mat-radio-button>
+                        <mat-radio-button [value]="false" (click)="openPopup('ingredients-warn')">only
+                            with</mat-radio-button>
+                    </mat-radio-group>
+                </section>
+
+                <div class="user-input">
+                    <mat-form-field class="dense-1" color="primary"> <!--  floatLabel="always" -->
+                        <mat-label>ingredients</mat-label>
+
+                        <input type="text" matInput [matAutocomplete]="auto" formControlName="userInput"
+                            (input)="onInputChanged()" (focus)="onInputChanged()">
+                        <mat-autocomplete #auto="matAutocomplete"
+                            (optionSelected)="addSelectedItem($event.option.value)">
+                            <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+                                {{ item }}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <!-- <div *ngIf="(form.get('userInput')?.errors && form.get('userInput')?.touched )"> -->
+                    <div *ngIf="(this.selectedItems.length == 0 && form.get('userInput')?.touched )">
+                        <br>
+                        <mat-error>Please enter an ingredient.</mat-error>
+                    </div>
+                </div>
+                <div class="ingredients-list"></div> <!-- Not neccesary for now-->
+
+                <div class="selected-items">
+                    <table>
+                        <div *ngFor="let selectedItem of selectedItems" class="selected-item">
+                            <tr>
+                                <td class="action-td">
+                                    <mat-icon class="clear-icon"
+                                        (click)="removeSelectedItem(selectedItem)">clear</mat-icon>
+                                </td>
+                                <td>
+                                    {{ selectedItem }}
+                                </td>
+                            </tr>
+                        </div>
+                    </table>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <button mat-raised-button class="btn_ask" color="primary" (click)="submitForm()"
+            [disabled]="this.selectedItems.length == 0 || isCreating">
+
+            <ng-container *ngIf="isCreating; else createDish">
+                <mat-spinner diameter="20" color="accent"></mat-spinner>
+            </ng-container>
+            <ng-template #createDish>
+                find me a dish!
+            </ng-template>
+        </button>
+
+        <div class="testing">
+            <button (click)="printItems()">show</button>
+            <button (click)="urlcheck()">url check</button>
+
+        </div>
+
+    </div>
+    <div class="spacer"></div>
+</div>
+
+<div class="loading-recipe" *ngIf="isCreating">
+    <img id="logo2" src="assets/logo2.png" alt="curry-logo">
+    <div class="creatingMessage">Something is cooking...</div>
+</div>

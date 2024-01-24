@@ -1,0 +1,19 @@
+<mat-nav-list class="share-list">
+    <a mat-list-item [href]="whatsappLink + dynamicText" target="_blank" mat-list-item (click)="openLink()">
+        <mat-icon matListItemIcon>sms</mat-icon>
+        <span matListItemTitle>Whatsapp</span>
+        <span matLine>Share via Whatsapp</span>
+    </a>
+
+    <a mat-list-item [href]="generateMailtoLink()" target="_blank" mat-list-item (click)="openLink()">
+        <mat-icon matListItemIcon>forward_to_inbox</mat-icon>
+        <span matListItemTitle>Email</span>
+        <span matLine>Share via Email</span>
+    </a>
+
+    <a mat-list-item [cdkCopyToClipboard]="dynamicText" (click)="openLink(true)">
+        <mat-icon matListItemIcon>link</mat-icon>
+        <span matListItemTitle>Copy Link</span>
+        <span matLine>Copy to clipboard</span>
+    </a>
+</mat-nav-list>

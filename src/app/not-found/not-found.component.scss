@@ -1,0 +1,33 @@
+.container {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .error-msg {
+        text-align: center;
+        padding: 20px;
+        font-size: 2dvh;
+
+        #not-found {
+            width: 40vw;
+            max-width: 100%;
+            height: auto;
+        }
+    }
+}
+
+@media(orientation: portrait) {
+    .container {
+        .error-msg {
+            font-size: 4dvw;
+
+            #not-found {
+                width: 40vh;
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+}

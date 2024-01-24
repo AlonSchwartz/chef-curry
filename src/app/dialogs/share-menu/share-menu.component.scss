@@ -1,0 +1,33 @@
+.share-list {
+
+    a {
+
+        mat-icon,
+        svg {
+            margin-top: 25px;
+        }
+    }
+
+    .share-item {
+        mat-icon {
+            margin-right: 16px;
+            margin-top: 0px;
+            display: inline-flex;
+            /* Ensure the icon behaves as a flex item */
+            align-self: center;
+        }
+    }
+
+    .share-item-2 {
+
+        display: flex;
+        flex-direction: row;
+        padding: 0 1rem;
+        justify-content: flex-start;
+        align-items: center;
+
+        .icon {
+            padding-right: 0.75rem;
+        }
+    }
+}

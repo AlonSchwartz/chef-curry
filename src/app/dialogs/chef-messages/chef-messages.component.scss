@@ -1,0 +1,79 @@
+.message {
+
+    padding: 10px;
+
+    .popup-header {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background-color: #f2f2f2;
+
+
+        .sender-photo {
+            width: 50px;
+            height: 50px;
+            /* border-radius: 50%; // add only if i use curry photo*/
+            margin-right: 10px;
+            padding: 0px;
+            fill: #f1bb41;
+        }
+    }
+
+    .popup-content {
+        padding: 20px;
+    }
+
+    .popup-actions {
+        text-align: center;
+    }
+
+    .message-container {
+
+        .checkbox-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .button-container {
+            text-align: right;
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+
+            .auth-actions {
+                flex: 1;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}
+
+/*
+//
+.message-card {
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+
+}
+//
+.header {
+    align-items: center;
+}
+//
+.title {
+    font-weight: bold;
+    font-size: larger;
+}
+//
+.header-image {
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+//
+*/

@@ -1,0 +1,79 @@
+.container {
+    background-image: url('../../assets/background2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    height: 48%;
+    color: white;
+    padding: 1px;
+    display: inline-flex;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    //margin-left: 10%;
+    // margin-top: 1%;
+    //font-family: 'Amatic SC', roboto;
+    min-height: 100px;
+
+
+    .main-header {
+        padding-top: 10px; //Lowering the text position, so the header will be more in the center
+        font-size: 5vh;
+        font-weight: bold;
+        line-height: 1.6;
+        align-self: center;
+    }
+
+    .intro {
+        font-size: 2vh;
+        margin-bottom: 1vh;
+        align-self: center;
+
+    }
+
+    #logo {
+        //margin-top: 2%;
+        //margin-right: 2%;
+        border-radius: 45%;
+        width: 20vh;
+        align-self: center;
+        max-width: 100%;
+        /* Limit the width of the photo to its parent container */
+        height: auto;
+        /* Maintain the aspect ratio and adjust the height accordingly */
+    }
+
+    .actions {
+        margin-top: 1vh;
+        align-self: center;
+
+        .btn_ask {
+            padding: 1vh 1vh;
+            /* Adjust padding to change button size */
+            font-size: 2vh;
+            /* Adjust font size to change button text size */
+        }
+    }
+
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2%;
+
+    .footer-content {
+        text-align: center;
+        display: flex;
+    }
+
+    #heart-symbol {
+        height: 25px;
+        margin: 0 5px;
+    }
+}

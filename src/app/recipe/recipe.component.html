@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="spacer"></div>
+    <div class="recipe" *ngIf="this.recipe">
+        <div class="recipeName">
+            <h1>
+                {{this.recipe.name}}
+            </h1>
+        </div>
+        <div class="content">
+            <div class="ingredients">
+                <h2>Ingredients: </h2>
+
+                <li *ngFor="let ingredient of this.recipe?.ingredients"> {{ingredient}}</li>
+            </div>
+            <div class="instructions">
+                <h2>Instructions:</h2>
+                <ul>
+                    <li *ngFor="let instructionStep of this.recipe?.instructions"> {{instructionStep}}</li>
+                </ul>
+                <p>
+                    {{this.recipe.description}}
+                </p>
+
+            </div>
+        </div>
+        <div class="actions">
+            <mat-icon class="btn_love" [ngClass]="{ 'clicked': isFavorite }" [title]="fav_title"
+                (click)="addToFavorites()">favorite</mat-icon>
+            <mat-icon class="btn_share" (click)="shareRecipe('')">share</mat-icon>
+            <!--  <button (click)="test()"> CHECK</button>  -->
+        </div>
+    </div>
+    <not-found *ngIf="!this.recipe && !this.isLoading"></not-found>
+
+    <!-- We set a loading screen, in case the loading of the recipe from the server will take time -->
+    <div class="loading-recipe" *ngIf="this.isLoading">
+        <img id="logo2" src="assets/logo2.png" alt="curry-logo">
+    </div>
+
+    <div class="spacer"> </div>
+</div>
