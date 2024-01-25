@@ -1,6 +1,5 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'not-found',
@@ -17,5 +16,7 @@ export class NotFoundComponent {
     if (this.route.snapshot.data['fromRoute']) {
       this.errorMessage = " It seems we can't find this page. Please try again."
     }
+
+
   }
 }

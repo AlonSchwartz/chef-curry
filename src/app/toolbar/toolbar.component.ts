@@ -21,7 +21,6 @@ export class ToolbarComponent implements OnInit {
   //loggedIn: boolean = false;
   loggedIn = this.auth.loggedInSignal;
 
-
   openSignDiaglog() { //change the name of this function
     const dialogRef = this.dialog.open(LoginDialogComponent, {
       width: "35vh",
@@ -35,7 +34,6 @@ export class ToolbarComponent implements OnInit {
         console.log("deleting user info from local storage")
         localStorage.removeItem("userInfo")
         localStorage.removeItem("recipes")
-
         window.location.href = '/'
       }
       else {

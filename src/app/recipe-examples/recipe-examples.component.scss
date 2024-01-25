@@ -1,48 +1,35 @@
+/*
 .container {
 
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
-
     justify-content: center;
-    /* Horizontally center the sections */
-
+    min-width: 100%;
     font-size: 14px;
     color: #333;
     box-sizing: border-box;
 
     .sections {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        /* Center items vertically */
-        align-items: center;
-        /* Center items horizontally */
-        //padding: 5px;
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
     }
 
     .section {
-        width: 33.33%;
-        /* Each section takes up one-third of the container width */
+        display: flex;
+        flex-direction: column;
+
         text-align: center;
-        /* Center the text within the header */
-
-        height: 100%;
-        /* Adjust the height as needed */
-
-        box-sizing: border-box;
 
         h2 {
-            font-size: 24px;
-            margin-bottom: 1vh;
-
+            font-size: 1.5rem;
         }
 
         p {
-            margin-bottom: 1vh;
-            height: 18%;
-            font-size: 1.5vh;
-            padding: 0px 2px 0px 2px;
+            min-height: 10px;
+            font-size: 0.85rem;
+            //   padding: 0px 2px 0px 2px;
 
         }
 
@@ -61,4 +48,46 @@
 
     }
 
+}*/
+
+.container {
+    display: flex;
+    justify-content: center;
+
+}
+
+.sections {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    text-align: center;
+
+    .section {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            flex: 1; // Make the p element grow to fill the available space
+        }
+
+        button {
+            max-width: 94px;
+            place-self: center;
+        }
+
+        img {
+            width: 220px;
+            height: 220px;
+            place-self: center;
+        }
+    }
+}
+
+.empty-space {
+    flex: 0 0 1rem;
 }
