@@ -56,10 +56,12 @@
         align-self: center;
 
         .btn_ask {
-            padding: 1vh 1vh;
+            //padding: 1vh 1vh;
             /* Adjust padding to change button size */
             font-size: 1rem;
             /* Adjust font size to change button text size */
+            height: 2.2rem;
+            width: 7.5rem;
         }
     }
 
@@ -110,11 +112,16 @@ footer {
 }
 
 @media (max-width: 410px) {
+    .container {
+        max-width: 100%;
+        text-align: center;
+
+    }
+
     .content {
         //  width: auto;
-        // border: 2px solid red;
         margin-inline: 10px;
-        min-width: 100%;
+        min-width: 90%; //should be 100%
 
         .main-header {
             // font-size: 3rem;
@@ -132,6 +139,22 @@ footer {
             //white-space: pre-wrap;
         }
     }
+}
 
+@media (max-width: 1260px) and (min-height: 1372px) {
+    .content {
+        max-width: 65%;
+    }
+}
 
+@media (max-width: 960px) and (min-height: 1372px) {
+    .content {
+        max-width: 75%;
+    }
+}
+
+@media (max-width: 610px) and (min-height: 1372px) {
+    .content {
+        max-width: 100%;
+    }
 }

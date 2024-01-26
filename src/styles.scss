@@ -86,3 +86,10 @@ body {
 .mat-mdc-snack-bar-container .mdc-snackbar__surface {
   min-width: 2px !important;
 }
+
+@media (min-height: 1100px) {
+
+  html {
+    font-size: 1.5vh;
+  }
+}

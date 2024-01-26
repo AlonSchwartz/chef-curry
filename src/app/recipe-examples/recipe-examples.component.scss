@@ -76,18 +76,43 @@
         }
 
         button {
-            max-width: 94px;
             place-self: center;
+            font-size: 0.83rem;
+            height: 2.1rem;
+            width: 5.9rem;
         }
 
         img {
-            width: 220px;
-            height: 220px;
+            width: 13.75rem; //220px
+            height: 13.75rem; //220px
             place-self: center;
         }
+    }
+
+    .section:last-child {
+        display: none;
+
+        @media (min-width: 548px) and (max-width: 813px) {
+            display: flex;
+
+            /*In case i want the last element to be in the center*/
+            // grid-column: 1 / -1;
+            /* Span all columns */
+            // justify-self: center;
+            /* Center horizontally */
+            //align-self: center;
+            /* Center vertically */
+            //  min-width: 250px;
+            //   max-width: 370px;
+        }
+
     }
 }
 
 .empty-space {
     flex: 0 0 1rem;
+
+    @media (max-width: 400px) {
+        display: none; // Hide the empty space on really small screens
+    }
 }
