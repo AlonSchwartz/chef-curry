@@ -1,58 +1,7 @@
-/*
-.container {
-
-    display: grid;
-    grid-template-columns: 1fr 10fr 1fr;
-    justify-content: center;
-    min-width: 100%;
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-
-    .sections {
-        display: grid;
-        gap: 2rem;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-
-    }
-
-    .section {
-        display: flex;
-        flex-direction: column;
-
-        text-align: center;
-
-        h2 {
-            font-size: 1.5rem;
-        }
-
-        p {
-            min-height: 10px;
-            font-size: 0.85rem;
-            //   padding: 0px 2px 0px 2px;
-
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 2vh;
-            flex: 1 1 50%;
-            width: 220px;
-            height: 220px;
-        }
-
-        button {
-            color: #333;
-        }
-
-    }
-
-}*/
-
 .container {
     display: flex;
     justify-content: center;
+
 
 }
 

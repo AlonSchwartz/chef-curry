@@ -62,8 +62,4 @@ export class ToolbarComponent implements OnInit {
   openFavorites() {
     this.router.navigate(['favorites'])
   }
-
-  check() {
-    //console.log(this.auth.isLoggedIn())
-  }
 }

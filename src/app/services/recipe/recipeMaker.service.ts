@@ -18,6 +18,7 @@ export class RecipeMakerService {
   }
   private serverAddress: string = "http://localhost:9001";
 
+
   recipe: Recipe | undefined;
   favorites: Recipe[] = [];
 

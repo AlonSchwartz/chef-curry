@@ -22,8 +22,15 @@ export class RecipeComponent {
   fav_title: string = "";
   isLoading: boolean = true;
 
+  scrollToTop() {
+    console.log("Scrolling to top!")
+    window.scrollTo(0, 0);
+  }
 
   ngOnInit() {
+    if (window.scrollY > 0) {
+      this.scrollToTop();
+    }
     // this.loading = true;
     //In order to load an example recipe from assets
     this.route.queryParams.subscribe(() => {
@@ -34,6 +41,7 @@ export class RecipeComponent {
         this.isLoading = false;
       }
       if (recipe) {
+        console.log("There is a recipe from history")
         this.recipe = recipe;
         this.isFavorite = true;
         this.isLoading = false;
@@ -64,6 +72,10 @@ export class RecipeComponent {
 
     let recipe = this.recipeMaker.getRecipe()
     this.recipe = recipe;
+
+    if (this.recipe) {
+      this.isLoading = false;
+    }
 
     effect(() => {
       console.log("IN RECIPE: signal value changed, and its now: ")

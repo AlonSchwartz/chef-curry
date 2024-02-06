@@ -1,32 +1,33 @@
 <div class="container" [class.blur]="isCreating">
     <div class="spacer"></div>
     <div class="recipe-creator" *ngIf="!isCreating">
-        <div class="header">
+        <div class="header" #myDiv>
+            <!-- [class.openKeyboard]="mobileKeyboardOpen"-->
             <img id="logo" src="assets/logo2.png" alt="curry-logo">
             <h2>Flavors in Your Hands: Design Your Custom Dish</h2>
 
         </div>
         <div class="form">
             <form [formGroup]="form">
-                <section class="my-theme">
+                <section class="dish-preference-section">
                     <label>Recommend me a curry dish:</label>
-                    <mat-radio-group formControlName="withAdditionalIngredients" class="test-radio">
-                        <!-- add form control -->
+                    <mat-radio-group formControlName="withAdditionalIngredients" class="radio-group">
                         <mat-radio-button [value]="true">with</mat-radio-button>
-                        <mat-radio-button [value]="false" (click)="openPopup('ingredients-warn')">only
+                        <mat-radio-button [value]="false" (change)="openPopup('ingredients-warn');">only
                             with</mat-radio-button>
                     </mat-radio-group>
                 </section>
 
-                <div class="user-input">
-                    <mat-form-field class="dense-1" color="primary"> <!--  floatLabel="always" -->
+                <div class="user-input" id="userInputDiv">
+                    <mat-form-field class="dense-1" color="primary">
+                        <!--  floatLabel="always" -->
                         <mat-label>ingredients</mat-label>
 
                         <input type="text" matInput [matAutocomplete]="auto" formControlName="userInput"
-                            (input)="onInputChanged()" (focus)="onInputChanged()">
+                            (input)="onInputChanged()" (focus)="onInputChanged()" (blur)="closeOptionsList()">
                         <mat-autocomplete #auto="matAutocomplete"
                             (optionSelected)="addSelectedItem($event.option.value)">
-                            <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+                            <mat-option *ngFor="let item of filteredItems | async" [value]="item" id="auto">
                                 {{ item }}
                             </mat-option>
                         </mat-autocomplete>
@@ -70,13 +71,13 @@
                 find me a dish!
             </ng-template>
         </button>
-
+        <!-- 
         <div class="testing">
             <button (click)="printItems()">show</button>
-            <button (click)="urlcheck()">url check</button>
+            <button (click)="adjustBackgroundHeight()">check height</button>
 
         </div>
-
+-->
     </div>
     <div class="spacer"></div>
 </div>

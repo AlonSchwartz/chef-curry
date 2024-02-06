@@ -16,7 +16,9 @@ export class AuthService {
       this.updateLoginStatus(true);
     }
   }
-  private serverAddress: string = "http://localhost:9001";
+  private serverAddress: string = "http://localhost:9001"; //for local server
+
+
   // private loggedIn = false;
   loggedInSignal = signal(false);
 
@@ -176,6 +178,5 @@ export class AuthService {
   updateLoginStatus(value: boolean) {
     this.loggedInSignal.set(value)
   }
-
 
 }
