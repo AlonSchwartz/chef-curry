@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Recipe } from '../../interfaces/recipe.interface';
 import { recipe1, recipe2, recipe3 } from 'src/assets/recipes/exampleRecipes';
+//import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,13 +18,17 @@ export class RecipeMakerService {
       console.log(this.favorites)
     }
   }
-  private serverAddress: string = "http://localhost:9001";
+  private serverAddress = environment.serverAddress;
 
+  // private serverAddress: string = "http://localhost:9001";
+  // private serverAddress: string = "https://chef-curry-backend.vercel.app";
+  // private serverAddress: string = "https://chef-curry-backend.onrender.com"
 
   recipe: Recipe | undefined;
   favorites: Recipe[] = [];
 
   createRecipe(recipeReq: object) {
+    console.log(this.serverAddress)
     console.log(recipeReq)
 
     const httpOptions = {

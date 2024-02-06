@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, effect, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+//import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +18,11 @@ export class AuthService {
       this.updateLoginStatus(true);
     }
   }
-  private serverAddress: string = "http://localhost:9001"; //for local server
 
+  private serverAddress = environment.serverAddress;
+  //private serverAddress: string = "http://localhost:9001"; //for local server
+  // private serverAddress: string = "https://chef-curry-backend.vercel.app";
+  // private serverAddress: string = "https://chef-curry-backend.onrender.com"
 
   // private loggedIn = false;
   loggedInSignal = signal(false);
