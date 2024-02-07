@@ -43,16 +43,6 @@
 
         @media (min-width: 548px) and (max-width: 813px) {
             display: flex;
-
-            /*In case i want the last element to be in the center*/
-            // grid-column: 1 / -1;
-            /* Span all columns */
-            // justify-self: center;
-            /* Center horizontally */
-            //align-self: center;
-            /* Center vertically */
-            //  min-width: 250px;
-            //   max-width: 370px;
         }
 
     }

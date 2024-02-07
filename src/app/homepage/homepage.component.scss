@@ -1,5 +1,6 @@
 .container {
-    background-image: url('../../assets/background2.png');
+    //background-image: url('../../assets/background2.png');
+    background-image: url('../../assets/background2.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 30%;
@@ -67,43 +68,17 @@
 
 }
 
-/*
-// Not in use for now.
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 0 0.5rem 0;
-    background-color: grey;
-
-    .footer-content {
-        text-align: center;
-        display: flex;
-    }
-}
-*/
-
 @media (max-width: 1000px) {
     .content {
-        //  width: auto;
-        // border: 2px solid red;
         margin-inline: 5px;
         min-width: 404px;
 
         .main-header {
-            // font-size: 3rem;
             min-width: auto;
         }
 
         .intro {
-            //font-size: 2rem;
-            //margin-bottom: 1vh;
             align-self: center;
-
-            //width: 355px;
-            // overflow-wrap: break-word;
-            // word-wrap: break-word;
-            //white-space: pre-wrap;
         }
     }
 
@@ -128,14 +103,7 @@ footer {
         }
 
         .intro {
-            //font-size: 2rem;
-            //margin-bottom: 1vh;
             align-self: center;
-
-            //width: 355px;
-            // overflow-wrap: break-word;
-            // word-wrap: break-word;
-            //white-space: pre-wrap;
         }
     }
 }

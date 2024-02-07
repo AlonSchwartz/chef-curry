@@ -155,19 +155,9 @@ export class LoginDialogComponent {
           if (res.message) {
             this.loginMesseage = res.message;
           }
-          //this.dialogRef.close({ 'loggedIn': false })
         }
       })
 
-      /*
-            if (loginAttempt) {
-              this.failedLogin = false;
-              this.dialogRef.close({ 'loggedIn': true })
-      
-            }
-            else {
-              this.failedLogin = true;
-            }*/
     }
   }
 
@@ -177,21 +167,7 @@ export class LoginDialogComponent {
   }
 
   test() {
-    // console.log(this.login_form)
 
-    // console.log(this.register_form.get('email'))
-    //  console.log(this.register_form.get('passwordGroup')?.get('password')?.hasError('hasLowerCase'))
-    const recipe = {
-      name: "a",
-      ing: "b",
-      email: "abe6@ac.com"
-    }
-
-
-    const loginAttempt = this.auth.testAuth(recipe).subscribe(res => {
-      console.log("Works?!!?!?!")
-      console.log(res)
-    })
   }
 
   saveInLocalStorage(email: string, recipes: Recipe[]) {

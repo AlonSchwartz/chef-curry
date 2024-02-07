@@ -11,8 +11,6 @@ export class RecipeExamplesComponent {
   constructor(private router: Router) { }
 
   viewRecipe(exampleRecipe: number) {
-    //this.router.navigate(['viewRecipe'], { skipLocationChange: true })
-    //this.router.navigate(['viewRecipe'], { queryParams: { recipeId: exampleRecipe }, skipLocationChange: true });
     const navigationExtras = {
       state: {
         recipeId: exampleRecipe

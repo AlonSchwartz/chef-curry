@@ -54,21 +54,12 @@
             color: red;
             cursor: default;
         }
-
-
-    }
-
-    .content {
-        align-items: center; //can be deleted
     }
 
     .loading-recipe {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         #logo2 {
             max-width: 100%;

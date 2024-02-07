@@ -15,7 +15,6 @@ export class ChefMessagesComponent {
 
   ngOnInit() {
     this.popupType = this.data.type;
-    //  console.log("Inside popup: i am open")
   }
 
   closePopup() {

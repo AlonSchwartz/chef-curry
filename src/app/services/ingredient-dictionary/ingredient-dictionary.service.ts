@@ -33,20 +33,6 @@ export class IngredientDictionaryService {
     return suggestions;
   }
 
-  /*
-    public addIngredient(ingredient: string): void {
-      console.log("I AM IN ADD ING DICTIONARY METHOD")
-      const firstLetter = ingredient.charAt(0);
-      const ingredients = this.dictionary.get(firstLetter) || [];
-  
-      ingredients.push(ingredient)
-      ingredients.sort((a, b) => a.localeCompare(b));
-  
-      this.dictionary.set(firstLetter, ingredients);
-  
-  
-    }
-  */
   test() {
     console.log(this.dictionary)
   }

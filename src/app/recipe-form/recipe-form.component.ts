@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -19,7 +19,6 @@ import { AuthService } from '../services/auth/auth.service';
 })
 export class RecipeFormComponent implements AfterViewInit {
   isTouchable = "ontouchend" in document
-  // @ViewChild('myDiv') myDiv!: ElementRef;
 
   items: string[] = [];
 
@@ -90,31 +89,6 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    /*
-        const contentHeight = document.body.scrollHeight;
-        const visibleHeight = window.innerHeight;
-        const outerHeight = window.outerHeight;
-    
-        console.log("content height is " + contentHeight)
-        console.log("visible height is " + visibleHeight)
-        console.log("outerHeight height is " + outerHeight)
-    
-        
-            const div = this.renderer.createElement('div')
-            //const text = this.renderer.createText("Created by Renderer")
-            // this.renderer.appendChild(div, text)
-            this.renderer.appendChild(this.myDiv.nativeElement, div)
-            this.renderer.setStyle(this.myDiv.nativeElement, 'padding-top', '20px')
-        
-            setTimeout(() => {
-              console.log("Going to remove padding now.")
-              this.renderer.removeStyle(this.myDiv.nativeElement, 'padding-top')
-              this.renderer.removeChild(this.myDiv.nativeElement, div)
-              this.adjustBackgroundHeight();
-        
-        
-            }, 1000)
-        */
 
     window.requestAnimationFrame(() => {
       console.log("changing.")
@@ -241,12 +215,9 @@ export class RecipeFormComponent implements AfterViewInit {
       if (inputValue.length >= 1) {
         console.log("Just 1 character.")
         this.checkMobileKeyboard();
-        //window.scrollTo(0, 0)
-        //document.body.scrollTo(0, 500)
-        //window.scrollTo(0, -800)
+
 
         const scrollableContentHeight = document.body.scrollHeight;
-        // document.body.heigh
         console.warn(scrollableContentHeight)
 
       }

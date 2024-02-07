@@ -20,9 +20,8 @@ export class FavoriteRecipesComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  isPortrait: boolean = false;
+  //isPortrait: boolean = false;
 
-  //dataSource = new MatTableDataSource<PeriodicElement>(this.ELEMENT_DATA);
 
   constructor(private router: Router) {
   }
@@ -34,11 +33,8 @@ export class FavoriteRecipesComponent {
 
     console.log(this.recipes)
     console.log("======  ")
-    //console.log(this.dataSource)
     this.dataSource = new MatTableDataSource<Recipe>(this.recipes);
     console.log(this.recipes)
-    //  console.log(this.recipes[1].date)
-    // console.log(typeof this.recipes[1].date)
 
   }
 
