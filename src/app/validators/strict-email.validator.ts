@@ -30,17 +30,7 @@ export function strictEmailValidator(): ValidatorFn {
 
             const InvalidChars_regex = /[^a-zA-Z0-9.+_\-]/; //Any characater that is not a letter, number, or allowed special character
             const invalidPart = InvalidChars_regex.test(localPart)
-            /*
-                const test = /[^.+_\-]/.test(localPart)
-                const test2 = /[^a-z]/.test(localPart)
-                const test3 = /[^A-Z]/.test(localPart)
-                const test4 = /[^0-9]/.test(localPart)
-                
-                if (test && test2 && test3 && test4) {
-                    console.log("All tests are true. meaning there is unvalid value inside")
-                    return { invalidEmail: true };
-                }
-    */
+
             console.log(emailValue)
             console.log("regex = " + invalidPart)
 

@@ -5,13 +5,18 @@
     align-items: center;
     font-size: 1em;
 
-    .changeForm_btn {
-        cursor: pointer;
+    .change-form {
+        padding: 1em;
+
+        .changeForm_btn {
+            cursor: pointer;
+        }
+
+        .changeForm_btn:hover {
+            font-weight: bold;
+        }
     }
 
-    .changeForm_btn:hover {
-        font-weight: bold;
-    }
 
     .register_form {
         display: flex;
