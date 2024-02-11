@@ -22,8 +22,8 @@ export class ToolbarComponent implements OnInit {
 
   openSignDiaglog() { //change the name of this function
     const dialogRef = this.dialog.open(LoginDialogComponent, {
-      width: "35vh",
-      height: "58vh"
+      //width: "35vh",
+      //   height: "58vh"
     })
   }
 

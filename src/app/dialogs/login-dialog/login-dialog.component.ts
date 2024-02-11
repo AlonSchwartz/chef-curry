@@ -48,9 +48,7 @@ export class LoginDialogComponent {
         password: new FormControl('', [strongPasswordValidator(), Validators.required]),
         confirm_password: new FormControl('', [Validators.required])
       }, passwordMatchValidator()),
-      // password: new FormControl('', [strongPasswordValidator(), Validators.required]),
-      //  confirm_password: new FormControl('', [passwordMatchValidator(), Validators.required])
-    }, { updateOn: 'change' }) // The error message will appear once the user has finished typing
+    }, { updateOn: 'change' })
     this.login_form = this.formBuilder.group({
       email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required])
@@ -179,5 +177,10 @@ export class LoginDialogComponent {
     localStorage.setItem("userInfo", JSON.stringify(userInfo))
     localStorage.setItem("recipes", JSON.stringify(recipes))
 
+  }
+
+  changeForm() {
+    console.log("Updateing size")
+    //this.dialogRef.updateSize()
   }
 }

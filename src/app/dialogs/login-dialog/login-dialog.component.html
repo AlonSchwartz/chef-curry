@@ -27,7 +27,9 @@
 
         </form>
         <div class="change-form">
-            Don't have an account? <span class="changeForm_btn" (click)="hasAccount=false"> Register</span>
+            Don't have an account? <span class="changeForm_btn" (click)="hasAccount=false"
+                title="switch to register form">
+                Register</span>
         </div>
     </div>
 
@@ -50,8 +52,8 @@
             <div formGroupName="passwordGroup">
                 <mat-form-field>
                     <mat-label for="password">Password:</mat-label>
-                    <input matInput type="password" id="password" formControlName="password"
-                        autocomplete="new-password">
+                    <input matInput type="password" id="password" formControlName="password" autocomplete="new-password"
+                        maxlength="32">
                     <!--   <mat-hint>Password must </mat-hint>-->
                     <button mat-icon-button matSuffix
                         matTooltip="Must have at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 symbol."
@@ -65,7 +67,7 @@
                 <mat-form-field>
                     <mat-label for="password">confirm password:</mat-label>
                     <input matInput type="password" id="confirm_password" formControlName="confirm_password"
-                        autocomplete="new-password">
+                        autocomplete="new-password" maxlength="32">
                     <button mat-icon-button matSuffix matTooltip="type your password again" matTooltipPosition="above"
                         matTooltipClass="register-tooltip" #repeatTooltip="matTooltip"
                         (click)="showTooltip(repeatTooltip)">
@@ -105,7 +107,9 @@
 
         </form>
         <div class="change-form">
-            Already have an account? <span class="changeForm_btn" (click)="hasAccount=true"> Login</span>
+            Already have an account? <span class="changeForm_btn" (click)="hasAccount=true"
+                title="switch to login form">
+                Login</span>
         </div>
 
         <!-- 

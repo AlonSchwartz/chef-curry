@@ -6,22 +6,21 @@
     font-size: 1em;
 
     .change-form {
-        padding: 1em;
+        padding: 1em 2em 1em 2em;
 
         .changeForm_btn {
             cursor: pointer;
         }
 
         .changeForm_btn:hover {
-            font-weight: bold;
+            -webkit-text-stroke: 1px black;
         }
     }
-
 
     .register_form {
         display: flex;
         flex-direction: column;
-        padding: 1em;
+        padding-inline: 1em;
 
         mat-form-field {
             display: flex;
@@ -31,7 +30,7 @@
     .login_form {
         display: flex;
         flex-direction: column;
-        padding: 1em;
+        padding-inline: 2em;
 
         mat-error {
             font-size: 0.9em;
