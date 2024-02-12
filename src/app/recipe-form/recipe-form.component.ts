@@ -61,6 +61,7 @@ export class RecipeFormComponent implements AfterViewInit {
     return isMobile;
   }
 
+  /*
   checkMobileKeyboard() {
 
     const visibleHeight = window.innerHeight
@@ -81,7 +82,7 @@ export class RecipeFormComponent implements AfterViewInit {
       console.warn("The Keyboard is " + abc)
     }
 
-  }
+  }*/
 
   closeOptionsList() {
     this.mobileKeyboardOpen = false;
@@ -95,12 +96,12 @@ export class RecipeFormComponent implements AfterViewInit {
       window.addEventListener('resize', this.adjustBackgroundHeight);
       window.addEventListener('focusout', this.adjustBackgroundHeight)
       window.addEventListener('focusin', this.adjustBackgroundHeight)
-      window.addEventListener('scroll', this.changing)
+      //window.addEventListener('scroll', this.changing)
       //   window.addEventListener('touchstart', this.changing)
 
       setTimeout(() => {
         this.adjustBackgroundHeight(); // We are calling this to make sure that the design will fit the screen size on loading
-      }, 10); // really small timeout, so all the divs will load properly
+      }, 15); // really small timeout, so all the divs will load properly
     });
   }
 
@@ -115,12 +116,12 @@ export class RecipeFormComponent implements AfterViewInit {
     console.log(userInputDiv)
 
   }
-
-  changing2() {
-    console.warn("FOCUS IN!")
-    this.adjustBackgroundHeight();
-
-  }
+  /*
+    changing2() {
+      console.warn("FOCUS IN!")
+      this.adjustBackgroundHeight();
+  
+    }*/
 
   ngOnInit() {
 
@@ -197,7 +198,7 @@ export class RecipeFormComponent implements AfterViewInit {
 
     console.log("content height is " + contentHeight)
     console.log("outer height is " + visibleHeight)
-    this.checkMobileKeyboard();
+    //this.checkMobileKeyboard();
 
     // Simulate lazy loading here based on this.userInput
     const inputValue = this.form.controls['userInput'].value;
@@ -214,7 +215,7 @@ export class RecipeFormComponent implements AfterViewInit {
 
       if (inputValue.length >= 1) {
         console.log("Just 1 character.")
-        this.checkMobileKeyboard();
+        //  this.checkMobileKeyboard();
 
 
         const scrollableContentHeight = document.body.scrollHeight;
@@ -249,6 +250,11 @@ export class RecipeFormComponent implements AfterViewInit {
       console.log(this.form.controls['userInput'])
     }
   }
+  /*
+    preventTouchScroll(event: TouchEvent) {
+      // event.preventDefault();
+      console.log(event)
+    }*/
 
   submitForm() {
     this.isCreating = true;

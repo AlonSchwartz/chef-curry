@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { strongPasswordValidator } from 'src/app/validators/strong-password.validator';
 import { passwordMatchValidator } from 'src/app/validators/password-match.validator';
@@ -15,6 +15,8 @@ import { Recipe } from 'src/app/interfaces/recipe.interface';
   styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent {
+
+  // @Output() click = new EventEmitter<any>();
 
   hasAccount: boolean = true;
   register_form: FormGroup; // Create a form group
@@ -160,12 +162,18 @@ export class LoginDialogComponent {
   }
 
   showTooltip(tool: MatTooltip) {
-    // tool.show()
-    // console.log(tool)
+    //tool.show()
+    //console.log(tool)
   }
 
   test() {
+    console.log(this.register_form)
 
+  }
+
+  handleClick(event: Event) {
+    event.stopPropagation(); // Prevent bubbling up to input field
+    //this.click.emit(event);
   }
 
   saveInLocalStorage(email: string, recipes: Recipe[]) {

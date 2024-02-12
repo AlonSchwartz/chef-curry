@@ -33,7 +33,6 @@
         </div>
     </div>
 
-
     <div *ngIf="!hasAccount">
         <form [formGroup]="register_form" class="register_form" (ngSubmit)="onRegister()">
             <h1>Register</h1>
@@ -42,7 +41,8 @@
                 <mat-label for="email">Email:</mat-label>
                 <input matInput type="email" id="email" formControlName="email" autocomplete="email">
                 <button mat-icon-button matSuffix matTooltip="Your email address. Supports only .com and .co.il"
-                    matTooltipPosition="above" matTooltipClass="register-tooltip" #emailTooltip="matTooltip">
+                    matTooltipPosition="above" matTooltipClass="register-tooltip" #emailTooltip="matTooltip"
+                    TooltipTouchGestures="false" (click)="handleClick($event); emailTooltip.show()">
                     <mat-icon>help_outline</mat-icon>
                 </button>
                 <mat-error *ngIf="(!register_form.get('email')?.valid && register_form.get('email')?.dirty)">
@@ -58,19 +58,18 @@
                     <button mat-icon-button matSuffix
                         matTooltip="Must have at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 symbol."
                         matTooltipPosition="above" matTooltipClass="register-tooltip" #passwordTooltip="matTooltip"
-                        (click)="showTooltip(passwordTooltip)">
+                        (click)="handleClick($event); passwordTooltip.show()" TooltipTouchGestures="false">
                         <mat-icon>help_outline</mat-icon>
                     </button>
 
                 </mat-form-field>
-
                 <mat-form-field>
                     <mat-label for="password">confirm password:</mat-label>
                     <input matInput type="password" id="confirm_password" formControlName="confirm_password"
                         autocomplete="new-password" maxlength="32">
                     <button mat-icon-button matSuffix matTooltip="type your password again" matTooltipPosition="above"
                         matTooltipClass="register-tooltip" #repeatTooltip="matTooltip"
-                        (click)="showTooltip(repeatTooltip)">
+                        (click)="handleClick($event); repeatTooltip.show()" TooltipTouchGestures="false">
                         <mat-icon>help_outline</mat-icon>
                     </button>
                     <mat-error *ngIf="register_form.get('passwordGroup')?.errors?.['passwordMismatch']">
