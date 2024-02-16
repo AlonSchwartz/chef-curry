@@ -142,7 +142,7 @@ export class RecipeComponent {
   shareRecipe(text: string) {
 
     console.log(this.recipe)
-    const link = 'localhost:4200/viewRecipe/' + this.recipe?.shareableHash; // change to website domain
+    const link = 'https://chef-curry-umber.vercel.app/viewRecipe/' + this.recipe?.shareableHash; // change to website domain
 
 
     this._bottomSheet.open(ShareMenuComponent, {
