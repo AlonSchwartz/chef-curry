@@ -33,12 +33,31 @@ export class RecipeComponent {
     }
     // this.loading = true;
     //In order to load an example recipe from assets
+
+  }
+  constructor(
+    private recipeMaker: RecipeMakerService, private route: ActivatedRoute,
+    private location: Location, private auth: AuthService,
+    private _bottomSheet: MatBottomSheet,
+    private _snackBar: MatSnackBar) {
+
+    let recipe = this.recipeMaker.getRecipe()
+    this.recipe = recipe;
+
+    if (this.recipe) {
+      this.isLoading = false;
+    }
+
+    //////////////////
+
     this.route.queryParams.subscribe(() => {
       const recipeId = history.state.recipeId;
       const recipe = history.state.recipe;
       if (recipeId) {
         this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
         this.isLoading = false;
+        this.isFavorite = true;
+        console.warn("1")
       }
       if (recipe) {
         console.log("There is a recipe from history")
@@ -63,19 +82,9 @@ export class RecipeComponent {
         })
       }
     })
-  }
-  constructor(
-    private recipeMaker: RecipeMakerService, private route: ActivatedRoute,
-    private location: Location, private auth: AuthService,
-    private _bottomSheet: MatBottomSheet,
-    private _snackBar: MatSnackBar) {
 
-    let recipe = this.recipeMaker.getRecipe()
-    this.recipe = recipe;
 
-    if (this.recipe) {
-      this.isLoading = false;
-    }
+    ///////////////////
 
     effect(() => {
       console.log("IN RECIPE: signal value changed, and its now: ")
@@ -83,7 +92,12 @@ export class RecipeComponent {
 
 
       if (this.loggedIn()) {
-        this.fav_title = "Add to Favorites"
+        console.warn("2")
+        if (this.isFavorite) {
+          this.fav_title = "In Favorites"
+        } else {
+          this.fav_title = "Add to Favorites"
+        }
       } else {
         this.fav_title = "You have to be logged in"
       }
@@ -104,16 +118,19 @@ export class RecipeComponent {
     console.log(this.recipe)
     if (this.recipe) {
       this.recipeMaker.saveRecipe(this.recipe).subscribe(res => {
-        console.log("hello")
         if (res) {
           console.log(res)
+          this.isFavorite = true;
+          this.fav_title = "In Favorites"
         }
         else {
           //create a message to notify the user that saving have failed.
           console.log("Got an error.")
+          this._snackBar.open("Adding to favorites failed.", '', {
+            duration: 2000
+          })
         }
       })
-      this.isFavorite = true;
     }
     console.log(this.recipeMaker.favorites)
   }
