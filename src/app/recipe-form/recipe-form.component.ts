@@ -85,6 +85,7 @@ export class RecipeFormComponent implements AfterViewInit {
 
   showKeyboardSpacer() {
     this.mobileKeyboardOpen = true;
+    this.adjustBackgroundHeight()
 
     setTimeout(() => {
       window.scrollTo(0, 225);
