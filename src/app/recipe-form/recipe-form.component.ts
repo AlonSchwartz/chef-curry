@@ -72,6 +72,8 @@ export class RecipeFormComponent implements AfterViewInit {
     window.requestAnimationFrame(() => {
       console.log("changing.")
       window.addEventListener('resize', this.adjustBackgroundHeight);
+      // window.addEventListener('focus', this.adjustBackgroundHeight);
+
       //window.addEventListener('focusout', this.adjustBackgroundHeight)
       //window.addEventListener('focusin', this.adjustBackgroundHeight)
       //window.addEventListener('scroll', this.changing)
@@ -84,15 +86,15 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   showKeyboardSpacer() {
-    this.mobileKeyboardOpen = true;
-    this.adjustBackgroundHeight()
+    if (this.checkIfMobile()) {
+      this.mobileKeyboardOpen = true;
+      //this.adjustBackgroundHeight()
 
-    setTimeout(() => {
-      window.scrollTo(0, 225);
+      setTimeout(() => {
+        window.scrollTo(0, 225);
 
-    }, 15);
-
-
+      }, 15);
+    }
   }
 
   ngOnInit() {
@@ -131,16 +133,25 @@ export class RecipeFormComponent implements AfterViewInit {
    * The desired spot is inside a different div.
    */
   adjustBackgroundHeight() {
+    console.log(document.activeElement?.tagName)
+    if (document.activeElement?.tagName === "INPUT") {
+      console.warn("INPUT IS OPEN.")
+    }
+
+
     const userInputDiv = document.getElementById('userInputDiv');
     if (userInputDiv) {
       const divHeight = userInputDiv.getBoundingClientRect();
-      console.log('userInput:', divHeight);
       let value = divHeight.y + "px";
-      console.log("aaaa: " + value)
-      document.body.style.setProperty('--backgroundHeight', value)
-      console.log(value)
+      let oldSize = document.body.style.getPropertyValue('--backgroundHeight')
 
-      this.divHeight = divHeight.bottom;
+      if (oldSize === '' || this.mobileKeyboardOpen) {
+        if (oldSize < value) {
+          document.body.style.setProperty('--backgroundHeight', value)
+
+        }
+      }
+
     } else {
       console.error('userInputDiv not found.');
     }

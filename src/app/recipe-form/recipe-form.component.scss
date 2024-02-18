@@ -13,21 +13,14 @@
 
     color: white;
 
-    ////////////////////////////////////////////////////////////////////////
-    // z-index: 1;
-    /* Ensure the background is below the overlay */
-    transition: filter 1s ease;
-
     /* Add a smooth transition effect */
-    ////////////////////////////////////////////////////////////////
-    /// 
+    transition: filter 1s ease;
 
     .dish-preference-section {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         place-content: center;
-
         padding-bottom: 5px;
 
     }
