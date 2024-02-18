@@ -1,7 +1,7 @@
 <div class="container" [class.blur]="isCreating">
     <div class="spacer"></div>
     <div class="recipe-creator" *ngIf="!isCreating">
-        <div class="header" #myDiv>
+        <div class="header">
             <!-- [class.openKeyboard]="mobileKeyboardOpen"-->
             <img id="logo" src="assets/logo2.png" alt="curry-logo">
             <h2>Flavors in Your Hands: Design Your Custom Dish</h2>
@@ -24,7 +24,7 @@
                         <mat-label>ingredients</mat-label>
 
                         <input type="text" matInput [matAutocomplete]="auto" formControlName="userInput"
-                            (input)="onInputChanged()" (focus)="onInputChanged()" (blur)="closeOptionsList()">
+                            (input)="onInputChanged()" (focus)="onInputChanged()" (focusout)="closeOptionsList()">
                         <mat-autocomplete #auto="matAutocomplete"
                             (optionSelected)="addSelectedItem($event.option.value)">
                             <mat-option *ngFor="let item of filteredItems | async" [value]="item" id="auto">
@@ -69,6 +69,8 @@
                 find me a dish!
             </ng-template>
         </button>
+        <div class="keyboard-spacer" *ngIf="mobileKeyboardOpen"> </div>
+
     </div>
     <div class="spacer"></div>
 </div>

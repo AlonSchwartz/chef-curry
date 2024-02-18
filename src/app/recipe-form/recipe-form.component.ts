@@ -61,32 +61,10 @@ export class RecipeFormComponent implements AfterViewInit {
     return isMobile;
   }
 
-  /*
-  checkMobileKeyboard() {
-
-    const visibleHeight = window.innerHeight
-    console.log("visible height = " + visibleHeight)
-    if (visibleHeight <= 850) {
-      console.warn("NEED TO ADD PADDING")
-    }
-    if (this.checkIfMobile() && visibleHeight <= 850) {
-      // Check if the mobile keyboard is open
-      const inputElement = document.activeElement as HTMLElement;
-      if (inputElement.tagName === 'INPUT' && inputElement.getAttribute('type') === 'text') {
-        this.mobileKeyboardOpen = true;
-        // window.scrollTo(0, 0)
-      }
-
-      let abc = ''
-      this.mobileKeyboardOpen ? abc = "open" : abc = "closed"
-      console.warn("The Keyboard is " + abc)
-    }
-
-  }*/
-
   closeOptionsList() {
-    this.mobileKeyboardOpen = false;
-    // console.log("Closing the keyboard.")
+    //this.mobileKeyboardOpen = false;
+
+    //console.log("Closing the keyboard.")
   }
 
   ngAfterViewInit(): void {
@@ -94,8 +72,8 @@ export class RecipeFormComponent implements AfterViewInit {
     window.requestAnimationFrame(() => {
       console.log("changing.")
       window.addEventListener('resize', this.adjustBackgroundHeight);
-      window.addEventListener('focusout', this.adjustBackgroundHeight)
-      window.addEventListener('focusin', this.adjustBackgroundHeight)
+      //window.addEventListener('focusout', this.adjustBackgroundHeight)
+      //window.addEventListener('focusin', this.adjustBackgroundHeight)
       //window.addEventListener('scroll', this.changing)
       //   window.addEventListener('touchstart', this.changing)
 
@@ -105,25 +83,22 @@ export class RecipeFormComponent implements AfterViewInit {
     });
   }
 
-  changing() {
-    //  console.log('Scroll position:', window.scrollY)
+  showKeyboardSpacer() {
+    this.mobileKeyboardOpen = true;
 
-    const userInputDiv = document.getElementById('auto');
-    if (userInputDiv) {
-      const divHeight = userInputDiv.getBoundingClientRect();
-      console.log(divHeight)
-    }
-    console.log(userInputDiv)
+    setTimeout(() => {
+      window.scrollTo(0, 225);
+
+    }, 15);
+
 
   }
-  /*
-    changing2() {
-      console.warn("FOCUS IN!")
-      this.adjustBackgroundHeight();
-  
-    }*/
 
   ngOnInit() {
+
+    if (window.scrollY > 0) {
+      this.scrollToTop();
+    }
 
     // Initialize the userInput form control
     this.filteredItems = this.form.controls['userInput'].valueChanges.pipe(
@@ -141,9 +116,6 @@ export class RecipeFormComponent implements AfterViewInit {
     if (!this.loggedIn() && !this.dontShowAgain) {
       this.openPopup('suggest-login');
     }
-
-    //window.addEventListener('resize', this.test1);
-
   }
 
   /**
@@ -151,9 +123,6 @@ export class RecipeFormComponent implements AfterViewInit {
    */
   ngOnDestroy(): void {
     window.removeEventListener('resize', this.adjustBackgroundHeight)
-    window.removeEventListener('focusout', this.adjustBackgroundHeight)
-    window.removeEventListener('focusin', this.adjustBackgroundHeight)
-    window.removeEventListener('scroll', this.changing)
   }
 
   /**
@@ -166,6 +135,7 @@ export class RecipeFormComponent implements AfterViewInit {
       const divHeight = userInputDiv.getBoundingClientRect();
       console.log('userInput:', divHeight);
       let value = divHeight.y + "px";
+      console.log("aaaa: " + value)
       document.body.style.setProperty('--backgroundHeight', value)
       console.log(value)
 
@@ -190,14 +160,17 @@ export class RecipeFormComponent implements AfterViewInit {
     // Simulate lazy loading here based on the filterValue
     return this.items.filter(item => item.toLowerCase().includes(filterValue));
   }
-
+  scrollToTop() {
+    console.log("Scrolling to top!")
+    window.scrollTo(0, 0);
+  }
   onInputChanged() {
+    this.showKeyboardSpacer();
+    //const contentHeight = document.body.scrollHeight;
+    //const visibleHeight = window.outerHeight;
 
-    const contentHeight = document.body.scrollHeight;
-    const visibleHeight = window.outerHeight;
-
-    console.log("content height is " + contentHeight)
-    console.log("outer height is " + visibleHeight)
+    //console.log("content height is " + contentHeight)
+    // console.log("outer height is " + visibleHeight)
     //this.checkMobileKeyboard();
 
     // Simulate lazy loading here based on this.userInput
@@ -212,16 +185,6 @@ export class RecipeFormComponent implements AfterViewInit {
       this.filteredItems = new Observable<string[]>(observer => {
         observer.next(this._filterItems(this.form.controls['userInput'].value));
       });
-
-      if (inputValue.length >= 1) {
-        console.log("Just 1 character.")
-        //  this.checkMobileKeyboard();
-
-
-        const scrollableContentHeight = document.body.scrollHeight;
-        console.warn(scrollableContentHeight)
-
-      }
     }
   }
 
@@ -238,6 +201,7 @@ export class RecipeFormComponent implements AfterViewInit {
       this.userInput = '';
       console.log(this.userInput)
     }
+
     this.form.controls['userInput'].setValue('');
   }
 
