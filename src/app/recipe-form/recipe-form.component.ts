@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -87,10 +87,17 @@ export class RecipeFormComponent implements AfterViewInit {
 
   showKeyboardSpacer() {
     if (this.checkIfMobile()) {
+      if (this.mobileKeyboardOpen) {
+        console.warn("returning")
+        return;
+      }
+
       this.mobileKeyboardOpen = true;
       //this.adjustBackgroundHeight()
+      //console.log("scrollY: " + window.scrollY)
 
       setTimeout(() => {
+        console.log("Scrolling to 225")
         window.scrollTo(0, 225);
 
       }, 15);
@@ -172,22 +179,18 @@ export class RecipeFormComponent implements AfterViewInit {
     // Simulate lazy loading here based on the filterValue
     return this.items.filter(item => item.toLowerCase().includes(filterValue));
   }
+
   scrollToTop() {
     console.log("Scrolling to top!")
     window.scrollTo(0, 0);
   }
+
   onInputChanged() {
-    this.showKeyboardSpacer();
-    //const contentHeight = document.body.scrollHeight;
-    //const visibleHeight = window.outerHeight;
-
-    //console.log("content height is " + contentHeight)
-    // console.log("outer height is " + visibleHeight)
-    //this.checkMobileKeyboard();
-
     // Simulate lazy loading here based on this.userInput
     const inputValue = this.form.controls['userInput'].value;
+
     if (inputValue === '') {
+      this.showKeyboardSpacer();
       // If the input is empty, don't show any options
       this.filteredItems = new Observable<any[]>(observer => {
         observer.next([]);
@@ -332,13 +335,24 @@ export class RecipeFormComponent implements AfterViewInit {
     })
 
   }
+  /**
+ * Handles touch click while the input field is focused.
+ * In theory, Focusout can do that - but it triggers also when the user selects and item from the ingredients list, so here we bypass it
+ */
+  @HostListener('document:click', ['$event'])
+  handleTouchClick(event: MouseEvent) {
+    if (this.mobileKeyboardOpen == false) {
+      return;
+    }
+    else if ('ontouchstart' in window || navigator.maxTouchPoints) {
+      const clickedElement = event.target as HTMLElement;
+
+      //In case the user clicked ouside the ingredients list
+      if ((clickedElement.className !== 'mdc-list-item__primary-text') && (clickedElement.tagName !== 'INPUT') && (clickedElement.className !== 'mat-mdc-option mdc-list-item ng-star-inserted')) {
+        this.mobileKeyboardOpen = false;
+      }
+    }
+  }
 
 }
-/*
-Hi! This is your chef speaking.
-I have noticed that you don't have an account yet.
-That means that you cannot save the recipe I am about to give you.
-Would you like to create an account now?
 
-create account | maybe later
-*/
