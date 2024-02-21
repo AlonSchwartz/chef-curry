@@ -92,9 +92,10 @@ export class RecipeFormComponent implements AfterViewInit {
       this.mobileKeyboardOpen = true;
 
       const headerPosition = this.mainHeader.nativeElement.offsetTop;
-      console.log(headerPosition)
+
       setTimeout(() => {
         console.log("Scrolling to " + headerPosition)
+        console.log(this.mobileKeyboardOpen)
         window.scrollTo(0, headerPosition);
 
       }, 15);
@@ -333,9 +334,8 @@ export class RecipeFormComponent implements AfterViewInit {
     }
     else if ('ontouchstart' in window || navigator.maxTouchPoints) {
       const clickedElement = event.target as HTMLElement;
-
       //In case the user clicked ouside the ingredients list
-      if ((clickedElement.className !== 'mdc-list-item__primary-text') && (clickedElement.tagName !== 'INPUT') && (clickedElement.className !== 'mat-mdc-option mdc-list-item ng-star-inserted')) {
+      if (clickedElement.tagName !== 'INPUT' && clickedElement.tagName !== 'MAT-LABEL' && clickedElement.tagName !== 'MAT-OPTION' && clickedElement.tagName !== 'SPAN') {
         this.mobileKeyboardOpen = false;
       }
     }

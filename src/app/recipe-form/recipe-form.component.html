@@ -10,12 +10,13 @@
         <div class="form">
             <form [formGroup]="form">
                 <section class="dish-preference-section">
-                    <label>Recommend me a curry dish:</label>
-                    <mat-radio-group formControlName="withAdditionalIngredients" class="radio-group">
-                        <mat-radio-button [value]="true">with</mat-radio-button>
-                        <mat-radio-button [value]="false" (change)="openPopup('ingredients-warn');">only
-                            with</mat-radio-button>
-                    </mat-radio-group>
+                    <label>Recommend me a curry dish:
+                        <mat-radio-group formControlName="withAdditionalIngredients" class="radio-group">
+                            <mat-radio-button [value]="true">with</mat-radio-button>
+                            <mat-radio-button [value]="false" (change)="openPopup('ingredients-warn');">only
+                                with</mat-radio-button>
+                        </mat-radio-group>
+                    </label>
                 </section>
 
                 <div class="user-input" id="userInputDiv" #userInputDiv>
