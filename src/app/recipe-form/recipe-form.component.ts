@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, HostListener } from '@angular/core';
+import { Component, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -20,6 +20,12 @@ import { AuthService } from '../services/auth/auth.service';
 export class RecipeFormComponent implements AfterViewInit {
   isTouchable = "ontouchend" in document
 
+  @ViewChild('userInputDiv')
+  inputDiv!: ElementRef;
+
+  @ViewChild('mainHeader')
+  mainHeader!: ElementRef;
+
   items: string[] = [];
 
   userInput = '';
@@ -31,9 +37,9 @@ export class RecipeFormComponent implements AfterViewInit {
   dontShowAgain: boolean = false;
   isPopupOpen: boolean = false;
   mobileKeyboardOpen: boolean = false;
-
+  previousTag: string | null = null;
+  inputHeight: string = '0px'
   form: FormGroup; // Create a form group
-  divHeight = 0;
 
   constructor(private formBuilder: FormBuilder,
     private dictionary: IngredientDictionaryService,
@@ -50,7 +56,7 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   checkIfMobile(): boolean {
-    console.log("Touchscren? " + this.isTouchable)
+    //console.log("Touchscren? " + this.isTouchable)
 
     var isMobile = false;
     // device detection
@@ -69,21 +75,12 @@ export class RecipeFormComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    window.requestAnimationFrame(() => {
-      console.log("changing.")
-      window.addEventListener('resize', this.adjustBackgroundHeight);
-      // window.addEventListener('focus', this.adjustBackgroundHeight);
-
-      //window.addEventListener('focusout', this.adjustBackgroundHeight)
-      //window.addEventListener('focusin', this.adjustBackgroundHeight)
-      //window.addEventListener('scroll', this.changing)
-      //   window.addEventListener('touchstart', this.changing)
-
-      setTimeout(() => {
-        this.adjustBackgroundHeight(); // We are calling this to make sure that the design will fit the screen size on loading
-      }, 15); // really small timeout, so all the divs will load properly
-    });
+    setTimeout(() => {
+      this.adjustBackgroundHeight(); // We are calling this to make sure that the design will fit the screen size on loading
+    }, 15); // really small timeout, so all the divs will load properly
   }
+
+
 
   showKeyboardSpacer() {
     if (this.checkIfMobile()) {
@@ -93,12 +90,12 @@ export class RecipeFormComponent implements AfterViewInit {
       }
 
       this.mobileKeyboardOpen = true;
-      //this.adjustBackgroundHeight()
-      //console.log("scrollY: " + window.scrollY)
 
+      const headerPosition = this.mainHeader.nativeElement.offsetTop;
+      console.log(headerPosition)
       setTimeout(() => {
-        console.log("Scrolling to 225")
-        window.scrollTo(0, 225);
+        console.log("Scrolling to " + headerPosition)
+        window.scrollTo(0, headerPosition);
 
       }, 15);
     }
@@ -139,28 +136,17 @@ export class RecipeFormComponent implements AfterViewInit {
    * Adjusting background image height to be from the top of the page, to the exact spot in every device screen.
    * The desired spot is inside a different div.
    */
+  @HostListener('window:resize', ['$event'])
   adjustBackgroundHeight() {
-    console.log(document.activeElement?.tagName)
-    if (document.activeElement?.tagName === "INPUT") {
-      console.warn("INPUT IS OPEN.")
-    }
 
+    if (this.inputDiv) {
+      const newInputHeight = this.inputDiv.nativeElement.offsetTop + "px"
 
-    const userInputDiv = document.getElementById('userInputDiv');
-    if (userInputDiv) {
-      const divHeight = userInputDiv.getBoundingClientRect();
-      let value = divHeight.y + "px";
-      let oldSize = document.body.style.getPropertyValue('--backgroundHeight')
-
-      if (oldSize === '' || this.mobileKeyboardOpen) {
-        if (oldSize < value) {
-          document.body.style.setProperty('--backgroundHeight', value)
-
-        }
+      if (newInputHeight !== this.inputHeight) {
+        console.log(newInputHeight)
+        console.log(this.inputHeight)
+        this.inputHeight = newInputHeight;
       }
-
-    } else {
-      console.error('userInputDiv not found.');
     }
   }
 
@@ -335,6 +321,7 @@ export class RecipeFormComponent implements AfterViewInit {
     })
 
   }
+
   /**
  * Handles touch click while the input field is focused.
  * In theory, Focusout can do that - but it triggers also when the user selects and item from the ingredients list, so here we bypass it
