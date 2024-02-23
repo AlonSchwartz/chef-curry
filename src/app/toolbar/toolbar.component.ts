@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
+
+  availableFonts: string[] = ["Roboto", "Segoe UI", "-apple-system", "BlinkMacSystemFont", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "sans-serif"];
+  selectedFont: string = '';
+
   constructor(public dialog: MatDialog, private auth: AuthService, private router: Router) {
 
     effect(() => {
@@ -19,6 +23,10 @@ export class ToolbarComponent implements OnInit {
   }
   //loggedIn: boolean = false;
   loggedIn = this.auth.loggedInSignal;
+
+  applyFont(): void {
+    document.body.style.fontFamily = this.selectedFont;
+  }
 
   openSignDiaglog() { //change the name of this function
     const dialogRef = this.dialog.open(LoginDialogComponent, {
