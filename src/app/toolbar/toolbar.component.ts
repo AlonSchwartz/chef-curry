@@ -14,6 +14,8 @@ export class ToolbarComponent implements OnInit {
 
   availableFonts: string[] = ["Roboto", "Segoe UI", "-apple-system", "BlinkMacSystemFont", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "sans-serif"];
   selectedFont: string = '';
+  baseFontSizes: number[] = [10, 12, 14, 16, 18, 20];
+  selectedBaseFontSize: number = 16;
 
   constructor(public dialog: MatDialog, private auth: AuthService, private router: Router) {
 
@@ -26,6 +28,9 @@ export class ToolbarComponent implements OnInit {
 
   applyFont(): void {
     document.body.style.fontFamily = this.selectedFont;
+  }
+  changeBaseFontSize(): void {
+    document.documentElement.style.fontSize = this.selectedBaseFontSize + 'px';
   }
 
   openSignDiaglog() { //change the name of this function

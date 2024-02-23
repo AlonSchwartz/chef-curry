@@ -3,6 +3,9 @@
     <select [(ngModel)]="selectedFont" (change)="applyFont()">
         <option *ngFor="let font of availableFonts" [value]="font">{{ font }}</option>
     </select>
+    <select [(ngModel)]="selectedBaseFontSize" (change)="changeBaseFontSize()">
+        <option *ngFor="let size of baseFontSizes" [value]="size">{{ size }}</option>
+    </select>
     <div class="spacer"></div>
     <span class="login_btn" *ngIf="!loggedIn()" (click)="openSignDiaglog()">Login</span>
 
