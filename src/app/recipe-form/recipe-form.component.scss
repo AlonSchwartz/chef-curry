@@ -23,6 +23,10 @@
         place-content: center;
         padding-bottom: 5px;
 
+        .radio-group {
+            white-space: nowrap;
+        }
+
     }
 
     .clear-btn {
@@ -109,6 +113,8 @@
     /* Limit the width of the photo to its parent container */
     height: auto;
     /* Maintain the aspect ratio and adjust the height accordingly */
+    padding-top: 5px;
+
 }
 
 .loading-recipe {

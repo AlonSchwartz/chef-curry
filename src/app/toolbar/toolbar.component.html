@@ -1,10 +1,5 @@
 <div class="toolbar">
-    <img width="40" src="assets/logo.jpeg" [routerLink]="''">
-    <!------------->
-    <select [(ngModel)]="selectedFont" (change)="applyFont()">
-        <option *ngFor="let font of availableFonts" [value]="font">{{ font }}</option>
-    </select>
-    <!------------->
+    <img width="35" src="assets/logocopy.jpeg" [routerLink]="''">
     <div class="spacer"></div>
     <span class="login_btn" *ngIf="!loggedIn()" (click)="openSignDiaglog()">Login</span>
 
