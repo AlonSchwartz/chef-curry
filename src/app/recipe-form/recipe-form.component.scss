@@ -16,6 +16,23 @@
     /* Add a smooth transition effect */
     transition: filter 1s ease;
 
+
+    .form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        /* Adjust the gap between grid items */
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        /* Adjust the number of columns as needed */
+        gap: 20px;
+        /* Adjust the gap between grid items */
+    }
+
+
     .dish-preference-section {
         display: flex;
         flex-wrap: wrap;
@@ -39,18 +56,40 @@
     }
 
     .clear-icon {
-        //  font-size: 20px;
         transform: scale(0.7);
         font-weight: bold;
         vertical-align: middle;
         /* Adjust vertical alignment */
 
+        cursor: pointer;
+        //  margin-right: 10px;
+
     }
 
 
     .selected-items {
-        padding-top: 1em;
+        //  padding-top: 1em;
+        //color: black;
+
+        display: grid;
+        //   grid-template-columns: repeat(auto-fit, minmax(200px, auto));
+        /* Responsive grid columns */
+        // gap: 10px;
+        /* Adjust the gap between grid items */
+        justify-items: center;
+        /* Center items horizontally */
+
+    }
+
+    .selected-item {
+        min-width: 200px;
+        max-width: fit-content;
+
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
         color: black;
+        justify-self: left;
 
     }
 

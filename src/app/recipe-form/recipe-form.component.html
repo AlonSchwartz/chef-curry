@@ -41,6 +41,7 @@
                 </div>
 
                 <div class="selected-items">
+                    <!-- 
                     <table>
                         <div *ngFor="let selectedItem of selectedItems" class="selected-item">
                             <tr>
@@ -54,6 +55,13 @@
                             </tr>
                         </div>
                     </table>
+-->
+                    <div class="selected-items">
+                        <div *ngFor="let selectedItem of selectedItems" class="selected-item">
+                            <mat-icon class="clear-icon" (click)="removeSelectedItem(selectedItem)">clear</mat-icon>
+                            <div class="item-content">{{ selectedItem }}</div>
+                        </div>
+                    </div>
                 </div>
 
             </form>
