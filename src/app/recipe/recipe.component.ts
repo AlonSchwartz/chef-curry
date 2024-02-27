@@ -31,8 +31,14 @@ export class RecipeComponent {
     if (window.scrollY > 0) {
       this.scrollToTop();
     }
-    // this.loading = true;
-    //In order to load an example recipe from assets
+
+    if (!this.recipe) {
+      // If we dont have a recipe at this point, we will not get a recipe and we can stop the loading animation.
+      // Setting a timeout in order that the animation will be seen briefly
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
+    }
 
   }
   constructor(

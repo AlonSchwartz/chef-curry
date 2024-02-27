@@ -43,6 +43,12 @@ $padding-value: 2%;
         grid-template-columns: 1fr 10fr 1fr;
         padding-bottom: 2%;
 
+        .mat-mdc-row:hover .mat-mdc-cell {
+            border-color: unset;
+            font-weight: normal;
+            font-size: 1em;
+        }
+
         .mdc-data-table__header-cell {
             border-bottom: 1px solid black;
             border-top: 1px solid black;
@@ -57,12 +63,12 @@ $padding-value: 2%;
         .mat-mdc-paginator {
             border-top: 1px solid black;
             padding-bottom: 2%;
+            white-space: nowrap;
         }
 
         .mat-column-date {
             display: none;
         }
-
 
 
         .mat-column-respFavorites {
