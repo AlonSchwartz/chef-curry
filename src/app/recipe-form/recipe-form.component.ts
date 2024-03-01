@@ -40,6 +40,7 @@ export class RecipeFormComponent implements AfterViewInit {
   previousTag: string | null = null;
   inputHeight: string = '0px'
   form: FormGroup; // Create a form group
+  warningDisplayed: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private dictionary: IngredientDictionaryService,
@@ -287,12 +288,16 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   openPopup(popupType: string) {
-    console.log("Opening popup!")
+    console.log("Opening popup! type is " + popupType)
+    if (popupType === 'ingredients-warn' && this.warningDisplayed) {
+      return;
+    }
     const dialogRef = this.dialog.open(ChefMessagesComponent, {
       data: {
         type: popupType,
       },
-      autoFocus: false
+      autoFocus: false,
+      disableClose: true
     })
 
     dialogRef.afterOpened().subscribe(() => {
@@ -318,6 +323,10 @@ export class RecipeFormComponent implements AfterViewInit {
             }
           })
         }
+      }
+      // the only way to close the popup without a result, is from the ingredients warning. 
+      else {
+        this.warningDisplayed = true;
       }
     })
 

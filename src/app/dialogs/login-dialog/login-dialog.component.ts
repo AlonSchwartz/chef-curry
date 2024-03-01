@@ -37,6 +37,8 @@ export class LoginDialogComponent {
   passwordWithNoDigit: boolean = true;
   passwordWithNoSymbol: boolean = true;
 
+  hasValue: boolean = false;
+
   constructor(private formBuilder: FormBuilder, private auth: AuthService,
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
@@ -57,9 +59,32 @@ export class LoginDialogComponent {
     }, { updateOn: 'change' })
 
     this.register_form.valueChanges.subscribe((value) => {
-      console.log(value)
 
+      // If we dont have a value, but a value has been added
+      if (!this.hasValue) {
+        this.hasValue = true;
+      } else {
+
+        //In case the user deleted the values from the fields, and now the form is empty
+        if (!(value.email || value.passwordGroup.password || value.passwordGroup.confirm_password)) {
+          this.hasValue = false;
+        }
+      }
     })
+
+    this.login_form.valueChanges.subscribe((value) => {
+
+      // If we dont have a value, but a value has been added
+      if (!this.hasValue) {
+        this.hasValue = true;
+      } else {
+
+        if (!(value.email || value.password)) {
+          this.hasValue = false;
+        }
+      }
+    })
+
     this.register_form.get('passwordGroup')?.statusChanges.subscribe((value) => {
       console.log(value)
       const passwordErrors = this.register_form.get('passwordGroup')?.get('password')?.errors;

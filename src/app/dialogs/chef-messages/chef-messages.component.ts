@@ -28,4 +28,8 @@ export class ChefMessagesComponent {
     }
     this.dialogRef.close({ 'hasAccount': hasAccount })
   }
+
+  closeForm(toClose: boolean) {
+    this.dialogRef.close({ 'toClose': toClose });
+  }
 }

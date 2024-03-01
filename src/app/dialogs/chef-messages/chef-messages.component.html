@@ -14,26 +14,39 @@
 </div>
 
 <ng-template #offer_login>
-    <div class="message-container">
-        <p>
-            Hi! This is your chef speaking.<br>
-            I have noticed that you are not logged in.<br>
-            That means that you cannot save the recipe I am about to give you.<br>
-            Would you like to login now?
-        </p>
+    <ng-container *ngIf="this.data.type === 'suggest-login' ;else confirmation ">
+        <div class="message-container">
+            <p>
+                Hi! This is your chef speaking.<br>
+                I have noticed that you are not logged in.<br>
+                That means that you cannot save the recipe I am about to give you.<br>
+                Would you like to login now?
+            </p>
 
-        <div class="checkbox-container">
-            <mat-checkbox class="checkbox" [(ngModel)]="dontShowAgain"></mat-checkbox> <span>Do not show again</span>
-        </div>
+            <div class="checkbox-container">
+                <mat-checkbox class="checkbox" [(ngModel)]="dontShowAgain"></mat-checkbox> <span>Do not show
+                    again</span>
+            </div>
 
-        <div class="button-container">
-            <div class="auth-actions">
-                <button mat-raised-button color="primary" (click)="redirectTo('login')">Login</button>
-                <button mat-raised-button color="primary" (click)="redirectTo('register')">Register</button>
-            </div>
-            <div class="dismiss-container">
-                <button mat-raised-button color="primary" (click)="this.closePopup()">Maybe later</button>
+            <div class="button-container">
+                <div class="auth-actions">
+                    <button mat-raised-button color="primary" (click)="redirectTo('login')">Login</button>
+                    <button mat-raised-button color="primary" (click)="redirectTo('register')">Register</button>
+                </div>
+                <div class="dismiss-container">
+                    <button mat-raised-button color="primary" (click)="this.closePopup()">Maybe later</button>
+                </div>
             </div>
         </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #confirmation>
+    <p>
+        Are you sure you want to close the popup?
+    </p>
+    <div class="conf_actions">
+        <button mat-raised-button color="primary" (click)="closeForm(true)">Yes</button>
+        <button mat-raised-button color="primary" (click)="closeForm(false)">No</button>
     </div>
 </ng-template>

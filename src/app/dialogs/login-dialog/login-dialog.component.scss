@@ -63,3 +63,15 @@
 
 
 }
+
+@media (orientation: portrait) {
+
+    .changeForm_btn {
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .changeForm_btn:hover {
+        -webkit-text-stroke: unset
+    }
+}

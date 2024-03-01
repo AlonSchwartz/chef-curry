@@ -27,6 +27,12 @@
         text-align: center;
     }
 
+    .conf_actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
     .message-container {
 
         .checkbox-container {
