@@ -4,6 +4,7 @@ import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.compo
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ChefMessagesComponent } from '../dialogs/chef-messages/chef-messages.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -13,26 +14,18 @@ import { ChefMessagesComponent } from '../dialogs/chef-messages/chef-messages.co
 })
 export class ToolbarComponent implements OnInit {
 
-  availableFonts: string[] = ["Roboto", "Segoe UI", "-apple-system", "BlinkMacSystemFont", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "sans-serif"];
-  selectedFont: string = '';
-  baseFontSizes: number[] = [10, 12, 14, 16, 18, 20];
-  selectedBaseFontSize: number = 16;
-
-  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router) {
+  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private _snackBar: MatSnackBar) {
 
     effect(() => {
       console.log("Just a check...")
     })
   }
-  //loggedIn: boolean = false;
   loggedIn = this.auth.loggedInSignal;
 
 
   ngOnInit(): void {
-    let userInfo = localStorage.getItem("userInfo");
-    console.log(userInfo)
-    if (userInfo) {
-      let email = JSON.parse(userInfo).email;
+    let email = this.auth.getUserEmail();
+    if (email) {
       console.log(email)
       this.auth.validateStoredTokens(email).subscribe(response => {
         console.log(response)
@@ -42,13 +35,6 @@ export class ToolbarComponent implements OnInit {
         }
       });
     }
-  }
-
-  applyFont(): void {
-    document.body.style.fontFamily = this.selectedFont;
-  }
-  changeBaseFontSize(): void {
-    document.documentElement.style.fontSize = this.selectedBaseFontSize + 'px';
   }
 
   openSignDiaglog() { //change the name of this function
@@ -124,11 +110,14 @@ export class ToolbarComponent implements OnInit {
         console.log("deleting user info from local storage")
         localStorage.removeItem("userInfo")
         localStorage.removeItem("recipes")
-        window.location.href = '/'
+
+        this.router.navigate(['/'])
       }
       else {
         console.log("Failed?!")
-        // notify the user that the logout failed
+        this._snackBar.open("Logout failed", "", {
+          duration: 1500
+        })
       }
     })
   }

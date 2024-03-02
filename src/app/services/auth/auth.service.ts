@@ -10,47 +10,42 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
 
+  private userEmail: string | null = null;
+  private serverAddress = environment.serverAddress;
+  loggedInSignal = signal(false);
+
   constructor(private http: HttpClient) {
     let userInfo = localStorage.getItem("userInfo");
     if (userInfo) {
-      //this.loggedIn = JSON.parse(userInfo).loggedIn;
-      //this.signalTest(this.loggedIn);
       this.updateLoginStatus(true);
+      this.userEmail = JSON.parse(userInfo).email;
     }
   }
 
-  private serverAddress = environment.serverAddress;
-  //private serverAddress: string = "http://localhost:9001"; //for local server
-  // private serverAddress: string = "https://chef-curry-backend.vercel.app";
-  // private serverAddress: string = "https://chef-curry-backend.onrender.com"
+  /**
+   * get the current user's email
+   * @returns user email, or null if the user is signed out
+   */
+  getUserEmail(): string | null {
+    return this.userEmail;
+  }
 
-  // private loggedIn = false;
-  loggedInSignal = signal(false);
-
+  /**
+   * regsiters a user
+   * @param email email to register with
+   * @param password user's password
+   * @returns Observable with registeration information
+   */
   register(email: string, password: string): Observable<any> {
-
-    const headers = new HttpHeaders({
-      'Accept': '/', // Replace with your actual access token
-    });
-
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true
     };
 
-    const requestOptions = {
-      headers: headers,
-    }
-
-    console.log("Starting to register")
-    let registrationSuccessful = false;
     const userData = {
       email: email,
       password: password
     }
-
-
-    console.log("i am about to send data to server")
 
     return this.http.post(this.serverAddress + '/api/auth/register', userData, httpOptions).pipe(
       tap(() => {
@@ -61,34 +56,25 @@ export class AuthService {
   }
 
 
+  /**
+   * Logging in a user
+   * @param email the user's email
+   * @param password the user's password
+   * @returns Observable that contains login information
+   */
   login(email: string, password: string): Observable<any> {
-
-    const headers = new HttpHeaders({
-      'Authorization': 'Bearer yourAccessToken', // Replace with your actual access token
-    });
-
-
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true
-
     };
-    console.log("Starting to login")
 
-    //send data to server. 
-    // if login is successfull, return true and notify the other components that the user is logged in.
-    // The components that needs to know are mainly the toolbar and recipe
     const userData = {
       email: email,
       password: password
     }
-    console.log("will it send?")
 
     return this.http.post(this.serverAddress + '/api/auth/login', userData, httpOptions).pipe(
-      tap(res => {
-        console.log(res)
-        // this.loggedIn = true;
-        //this.signalTest(this.loggedIn)
+      tap(() => {
         this.updateLoginStatus(true)
       }),
       catchError(this.handleError<any>('login')
@@ -106,11 +92,6 @@ export class AuthService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      // console.log(error)
-      // TODO: send the error to remote logging infrastructure
-      // console.error(error); // log to console instead
-
-      // TODO: better job of transforming error for user consumption
       console.error(`${operation} failed.`);
       let message = ''
       if (error.error.message) {
@@ -122,7 +103,7 @@ export class AuthService {
         message = "Communication error.";
       }
       let msg = {
-        message: message, //error.error.message
+        message: message,
         successfull: false
       }
       console.log(error)
@@ -131,19 +112,12 @@ export class AuthService {
     };
   }
 
-  testAuth(recipe: any): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      withCredentials: true
-
-    };
-
-    return this.http.post(this.serverAddress + '/api/auth/save', recipe, httpOptions).pipe(
-      catchError(this.handleError<any>('test'))
-    )
-  }
-
-  validateStoredTokens(email: string) {
+  /**
+   * Checks if the stored JWT is valid
+   * @param email user'e email
+   * @returns Observable with validation information
+   */
+  validateStoredTokens(email: string): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true
@@ -160,26 +134,34 @@ export class AuthService {
     )
   }
 
+  /**
+   * Preforming a logout
+   */
   logout() {
     const httpOptions = {
       withCredentials: true
     };
 
     return this.http.delete(this.serverAddress + '/api/auth/logout', httpOptions).pipe(
-      tap(res => {
-        console.log(res)
-        // this.loggedIn = false;
+      tap(() => {
         this.updateLoginStatus(false)
       }),
       catchError(this.handleError<any>('logout'))
     )
   }
 
+  /**
+   * 
+   * @returns whether a user is logged in or not
+   */
   isLoggedIn() {
-    //return this.loggedIn;
     return this.loggedInSignal();
   }
 
+  /**
+   * updates logged in signal with given value
+   * @param value the value to be updated
+   */
   updateLoginStatus(value: boolean) {
     this.loggedInSignal.set(value)
   }
