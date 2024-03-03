@@ -2,7 +2,7 @@ import { Component, AfterViewInit, HostListener, ViewChild, ElementRef } from '@
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { IngredientDictionaryService } from '../services/ingredient-dictionary/ingredient-dictionary.service';
+import { IngredientService } from '../services/ingredient/ingredient.service';
 import { RecipeMakerService } from '../services/recipe/recipeMaker.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -43,7 +43,7 @@ export class RecipeFormComponent implements AfterViewInit {
   warningDisplayed: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
-    private dictionary: IngredientDictionaryService,
+    private dictionary: IngredientService,
     private recipeMaker: RecipeMakerService,
     private router: Router,
     public dialog: MatDialog,

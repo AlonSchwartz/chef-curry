@@ -7,38 +7,49 @@ export class Trie {
         this.root = new TrieNode;
     }
 
+    /**
+     * insert a given word into the trie
+     * @param word the word to insert
+     */
     insert(word: string) {
         let node = this.root;
         for (const char of word) {
             if (!node.children.has(char)) {
                 node.children.set(char, new TrieNode());
             }
-            // This node will can't be undefined, because we are checking above if its not exists
+            // This node can't be undefined, because we are checking above if its not exists
             node = node.children.get(char)!;
         }
         node.isEndOfWord = true;
     }
 
+    /**
+     * Searches for words in the trie that contain a given substring.
+     * @param substring The substring to search for within words in the trie.
+     * @returns An array of words in the trie that contain the specified substring.
+     */
     search(substring: string): string[] {
         const suggestions: string[] = [];
         this.findAllWords(this.root, substring.toLowerCase(), suggestions);
         return suggestions;
     }
 
+    /**
+     * Recursively finds words in the trie that contain a given substring.
+     * @param node The current node being examined in the trie.
+     * @param substring The substring to search for within words in the trie
+     * @param suggestions An array to store words found containing the substring
+     * @param currentWord The word constructed so far during traversal (default: "")
+     */
     findAllWords(
         node: TrieNode,
         substring: string,
         suggestions: string[],
         currentWord: string = ""
     ) {
-
-        // Check if the current word contains the desired substring
-        if (currentWord.toLowerCase().includes(substring)) {
-            //if (currentWord.length > 3){
-            //console.log(currentWord + " includes " + substring)}
-
-            if (node.isEndOfWord) {
-                suggestions.push(currentWord.trim());
+        if (node.isEndOfWord) {
+            if (currentWord.toLowerCase().includes(substring)) {
+                suggestions.push(currentWord);
             }
         }
 
