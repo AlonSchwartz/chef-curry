@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Recipe } from 'src/app/interfaces/recipe.interface';
 //import { environment } from 'src/environments/environment.development';
 import { environment } from 'src/environments/environment';
 
@@ -12,7 +13,7 @@ export class AuthService {
 
   private userEmail: string | null = null;
   private serverAddress = environment.serverAddress;
-  loggedInSignal = signal(false);
+  private loggedInSignal = signal(false);
 
   constructor(private http: HttpClient) {
     let userInfo = localStorage.getItem("userInfo");
@@ -74,7 +75,13 @@ export class AuthService {
     }
 
     return this.http.post(this.serverAddress + '/api/auth/login', userData, httpOptions).pipe(
-      tap(() => {
+      map((res: any) => {
+        // console.log(res)
+        return res as { recipes: Recipe[], successful: boolean, title: string }
+      }),
+      tap((res) => {
+        console.log(res)
+        localStorage.setItem("recipes", JSON.stringify(res.recipes))
         this.updateLoginStatus(true)
       }),
       catchError(this.handleError<any>('login')
@@ -164,6 +171,10 @@ export class AuthService {
    */
   updateLoginStatus(value: boolean) {
     this.loggedInSignal.set(value)
+  }
+
+  getLoggedInSignal() {
+    return this.loggedInSignal.asReadonly();
   }
 
 }

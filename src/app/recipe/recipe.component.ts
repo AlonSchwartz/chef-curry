@@ -18,7 +18,7 @@ export class RecipeComponent {
   someData: string | null = '';
   recipe;
   isFavorite: boolean = false;
-  loggedIn = this.auth.loggedInSignal;
+  loggedIn = this.auth.getLoggedInSignal();
   fav_title: string = "";
   isLoading: boolean = true;
 
@@ -79,11 +79,12 @@ export class RecipeComponent {
       if (paramId) {
         this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
           this.isLoading = false;
-          console.log("It works?!?!")
+          console.log("It works?!?! 12")
           console.log(res)
           if (res) {
             this.recipe = res;
             this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
+            console.log("favorite? " + this.isFavorite)
           }
         })
       }
@@ -123,7 +124,7 @@ export class RecipeComponent {
 
     console.log(this.recipe)
     if (this.recipe) {
-      this.recipeMaker.saveRecipe(this.recipe).subscribe(res => {
+      this.recipeMaker.addToFavorites(this.recipe).subscribe(res => {
         if (res) {
           console.log(res)
           this.isFavorite = true;

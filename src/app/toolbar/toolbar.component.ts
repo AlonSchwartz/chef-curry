@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
       console.log("Just a check...")
     })
   }
-  loggedIn = this.auth.loggedInSignal;
+  loggedIn = this.auth.getLoggedInSignal();
 
 
   ngOnInit(): void {

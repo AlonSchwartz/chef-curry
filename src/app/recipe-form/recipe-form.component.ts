@@ -33,7 +33,7 @@ export class RecipeFormComponent implements AfterViewInit {
   filteredItems!: Observable<any[]>;
   filteredItems2: string[] = [];
   isCreating: boolean = false;
-  loggedIn = this.auth.loggedInSignal;
+  loggedIn = this.auth.getLoggedInSignal();
   dontShowAgain: boolean = false;
   isPopupOpen: boolean = false;
   mobileKeyboardOpen: boolean = false;
@@ -279,12 +279,6 @@ export class RecipeFormComponent implements AfterViewInit {
       "d": "i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. "
     }
     this.router.navigate(['viewRecipe', { state: e }])
-  }
-
-  urlcheck() {
-    this.recipeMaker.test().subscribe(a => {
-      console.log(a)
-    })
   }
 
   openPopup(popupType: string) {

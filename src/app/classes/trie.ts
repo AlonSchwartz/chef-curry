@@ -48,7 +48,7 @@ export class Trie {
         currentWord: string = ""
     ) {
         if (node.isEndOfWord) {
-            if (currentWord.toLowerCase().includes(substring)) {
+            if (currentWord.includes(substring)) {
                 suggestions.push(currentWord);
             }
         }
