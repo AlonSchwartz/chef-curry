@@ -17,10 +17,17 @@ export class ChefMessagesComponent {
     this.popupType = this.data.type;
   }
 
+  /**
+   * Closes the popup
+   */
   closePopup() {
     this.dialogRef.close({ 'dontShowAgain': this.dontShowAgain })
   }
 
+  /**
+   * Sets a redirection setting to a different path
+   * @param path the path to redirect to
+   */
   redirectTo(path: string) {
     let hasAccount: boolean = true;
     if (path === 'register') {
@@ -29,7 +36,11 @@ export class ChefMessagesComponent {
     this.dialogRef.close({ 'hasAccount': hasAccount })
   }
 
-  closeForm(toClose: boolean) {
+  /**
+   * This function is responsible for confirming the closure of the current popup and sending the user's decision (to close or not) back to the original popup.
+   * @param toClose A boolean value indicating whether the user has confirmed the closure of the popup
+   */
+  confirmFormClosure(toClose: boolean) {
     this.dialogRef.close({ 'toClose': toClose });
   }
 }

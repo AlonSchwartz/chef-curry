@@ -11,7 +11,6 @@
                 <mat-label for="password">Password:</mat-label>
                 <input type="password" matInput autocomplete="current-password" formControlName="password">
                 <mat-error *ngIf="!login_form.get('password')?.valid">Please enter password</mat-error>
-
             </mat-form-field>
 
             <mat-error *ngIf="failedLogin">{{loginMesseage}}</mat-error>
@@ -24,8 +23,8 @@
                     LOGIN
                 </ng-template>
             </button>
-
         </form>
+
         <div class="change-form">
             Don't have an account? <span class="changeForm_btn" (click)="hasAccount=false"
                 title="switch to register form">
@@ -36,7 +35,6 @@
     <div *ngIf="!hasAccount">
         <form [formGroup]="register_form" class="register_form" (ngSubmit)="onRegister()">
             <h1>Register</h1>
-            <!-- Add instructions on what emails are supported and what is considered valid password-->
             <mat-form-field>
                 <mat-label for="email">Email:</mat-label>
                 <input matInput type="email" id="email" formControlName="email" autocomplete="email">
@@ -46,7 +44,6 @@
                     <mat-icon>help_outline</mat-icon>
                 </button>
                 <mat-error *ngIf="(!register_form.get('email')?.valid && register_form.get('email')?.dirty)">
-
                     please enter valid email</mat-error>
             </mat-form-field>
             <div formGroupName="passwordGroup">
@@ -54,15 +51,14 @@
                     <mat-label for="password">Password:</mat-label>
                     <input matInput type="password" id="password" formControlName="password" autocomplete="new-password"
                         maxlength="32">
-                    <!--   <mat-hint>Password must </mat-hint>-->
                     <button mat-icon-button matSuffix
                         matTooltip="Must have at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 symbol."
                         matTooltipPosition="above" matTooltipClass="register-tooltip" #passwordTooltip="matTooltip"
                         (click)="handleClick($event); passwordTooltip.show()" TooltipTouchGestures="false">
                         <mat-icon>help_outline</mat-icon>
                     </button>
-
                 </mat-form-field>
+
                 <mat-form-field>
                     <mat-label for="password">confirm password:</mat-label>
                     <input matInput type="password" id="confirm_password" formControlName="confirm_password"
@@ -75,8 +71,8 @@
                     <mat-error *ngIf="register_form.get('passwordGroup')?.errors?.['passwordMismatch']">
                         Passwords do not match
                     </mat-error>
-
                 </mat-form-field>
+
                 <mat-error
                     *ngIf="(!register_form.get('passwordGroup.password')?.valid && register_form.get('passwordGroup.password')?.dirty)">
 
@@ -91,6 +87,7 @@
                 </mat-error>
             </div>
             <br>
+
             <button mat-raised-button class="btn_ask" color="primary"
                 [disabled]="!register_form.valid || isRegistering ">
                 <ng-container *ngIf="isRegistering; else registerButtonContent">
@@ -102,24 +99,14 @@
                 </ng-template>
             </button>
             <mat-error *ngIf="registrationMessage!== ''">{{registrationMessage}}</mat-error>
-
         </form>
+
         <div class="change-form">
             Already have an account? <span class="changeForm_btn" (click)="hasAccount=true"
                 title="switch to login form">
                 Login</span>
         </div>
-
-        <!-- 
-        password field is valid? {{ register_form.get('passwordGroup.password')?.valid}}
-        <br>
-        confirm_password field is valid? {{ register_form.get('passwordGroup.confirm_password')?.valid}}
-        <br>
-        fields are the same? {{ register_form.get('passwordGroup')?.valid}}
--->
-
     </div>
-    <!--<button (click)="test()">TEST</button> -->
 
     <div *ngIf="isRegistrationSuccessful && hasAccount" class="registrationMessage">
         <h2> {{registrationMessage}}</h2>
@@ -129,5 +116,3 @@
         </div>
     </div>
 </div>
-
-<!-- <button (click)="test()">CHECK</button> -->

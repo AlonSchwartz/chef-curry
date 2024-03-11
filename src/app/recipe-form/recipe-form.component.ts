@@ -310,8 +310,8 @@ export class RecipeFormComponent implements AfterViewInit {
 
         if (result.hasAccount != undefined) {
           const loginDialog = this.dialog.open(LoginDialogComponent, {
-            width: "35vh",
-            height: "58vh",
+            //width: "35vh",
+            //  height: "58vh",
             data: {
               hasAccount: result.hasAccount
             }

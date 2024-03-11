@@ -6,7 +6,6 @@ import { strictEmailValidator } from 'src/app/validators/strict-email.validator'
 import { MatTooltip } from '@angular/material/tooltip';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Recipe } from 'src/app/interfaces/recipe.interface';
 
 
 @Component({
