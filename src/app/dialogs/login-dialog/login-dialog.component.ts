@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { strongPasswordValidator } from 'src/app/validators/strong-password.validator';
 import { passwordMatchValidator } from 'src/app/validators/password-match.validator';
@@ -15,8 +15,6 @@ import { Recipe } from 'src/app/interfaces/recipe.interface';
   styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent {
-
-  // @Output() click = new EventEmitter<any>();
 
   hasAccount: boolean = true;
   register_form: FormGroup; // Create a form group
@@ -129,7 +127,7 @@ export class LoginDialogComponent {
             this.hasAccount = true;
             console.log(document.cookie)
 
-            this.saveInLocalStorage(email, [])
+            // this.saveInLocalStorage(email, [])
             this.dialogRef.updateSize();
 
           }
@@ -168,7 +166,7 @@ export class LoginDialogComponent {
           }
 
           //save basic user info on localStorage
-          this.saveInLocalStorage(email, recipes);
+          //this.saveInLocalStorage(email, recipes);
 
           this.dialogRef.close()
         }
@@ -193,7 +191,6 @@ export class LoginDialogComponent {
 
   test() {
     console.log(this.register_form)
-
   }
 
   handleClick(event: Event) {
@@ -201,6 +198,7 @@ export class LoginDialogComponent {
     //this.click.emit(event);
   }
 
+  /*
   saveInLocalStorage(email: string, recipes: Recipe[]) {
     const userInfo = {
       "loggedIn": true,
@@ -210,7 +208,7 @@ export class LoginDialogComponent {
     localStorage.setItem("userInfo", JSON.stringify(userInfo))
     localStorage.setItem("recipes", JSON.stringify(recipes))
 
-  }
+  }*/
 
   changeForm() {
     console.log("Updateing size")

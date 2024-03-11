@@ -3,9 +3,12 @@ import { Injectable, signal } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Recipe } from 'src/app/interfaces/recipe.interface';
-//import { environment } from 'src/environments/environment.development';
 import { environment } from 'src/environments/environment';
+import { UserDataService } from '../user-data/user-data.service';
 
+/**
+ * Service that handles user authentication
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +18,13 @@ export class AuthService {
   private serverAddress = environment.serverAddress;
   private loggedInSignal = signal(false);
 
-  constructor(private http: HttpClient) {
-    let userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
+  constructor(private http: HttpClient, private userData: UserDataService) {
+
+    let email = this.userData.getUserEmail();
+    if (email) {
+      console.warn(email)
       this.updateLoginStatus(true);
-      this.userEmail = JSON.parse(userInfo).email;
+      this.userEmail = email;
     }
   }
 
@@ -43,13 +48,15 @@ export class AuthService {
       withCredentials: true
     };
 
-    const userData = {
+    const authData = {
       email: email,
       password: password
     }
 
-    return this.http.post(this.serverAddress + '/api/auth/register', userData, httpOptions).pipe(
+    return this.http.post(this.serverAddress + '/api/auth/register', authData, httpOptions).pipe(
       tap(() => {
+        const userData = { recipes: [], email: email }
+        this.userData.saveUserData(userData)
         this.updateLoginStatus(true);
       }),
       catchError(this.handleError<any>('Registration'))
@@ -69,19 +76,20 @@ export class AuthService {
       withCredentials: true
     };
 
-    const userData = {
+    const authData = {
       email: email,
       password: password
     }
 
-    return this.http.post(this.serverAddress + '/api/auth/login', userData, httpOptions).pipe(
+    return this.http.post(this.serverAddress + '/api/auth/login', authData, httpOptions).pipe(
       map((res: any) => {
         // console.log(res)
         return res as { recipes: Recipe[], successful: boolean, title: string }
       }),
       tap((res) => {
         console.log(res)
-        localStorage.setItem("recipes", JSON.stringify(res.recipes))
+        const userData = { recipes: res.recipes, email: email }
+        this.userData.saveUserData(userData)
         this.updateLoginStatus(true)
       }),
       catchError(this.handleError<any>('login')
@@ -124,18 +132,19 @@ export class AuthService {
    * @param email user'e email
    * @returns Observable with validation information
    */
-  validateStoredTokens(email: string): Observable<any> {
+  validateStoredTokens(): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       withCredentials: true
     };
 
-    const userData = {
-      email: email,
+    const authData = {
+      email: this.userEmail,
     }
-    return this.http.post(this.serverAddress + '/api/auth/check-tokens', userData, httpOptions).pipe(
-      tap(res => {
+    return this.http.post(this.serverAddress + '/api/auth/check-tokens', authData, httpOptions).pipe(
+      tap(() => {
         this.updateLoginStatus(true)
+        this.userData.loadFavoriteRecipes();
       }),
       catchError(this.handleError<any>('validation'))
     )
@@ -152,6 +161,7 @@ export class AuthService {
     return this.http.delete(this.serverAddress + '/api/auth/logout', httpOptions).pipe(
       tap(() => {
         this.updateLoginStatus(false)
+        this.userData.deleteUserData()
       }),
       catchError(this.handleError<any>('logout'))
     )
@@ -173,6 +183,9 @@ export class AuthService {
     this.loggedInSignal.set(value)
   }
 
+  /**
+   * Gets the loggedIn variable as Readonly signal 
+   */
   getLoggedInSignal() {
     return this.loggedInSignal.asReadonly();
   }

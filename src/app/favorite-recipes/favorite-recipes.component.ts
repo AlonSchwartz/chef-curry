@@ -1,9 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, effect } from '@angular/core';
 import { Recipe } from '../interfaces/recipe.interface';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
+import { UserDataService } from '../services/user-data/user-data.service';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./favorite-recipes.component.scss']
 })
 export class FavoriteRecipesComponent {
-  recipes: Recipe[] = [];
+  //  recipes: Recipe[] = [];
+  recipes = this.userData.getFavoriteRecipes();
   displayedColumns: string[] = ['name', 'date', 'description'];
   displayedColumns2: string[] = ['respFavorites'];
 
@@ -23,19 +25,12 @@ export class FavoriteRecipesComponent {
   //isPortrait: boolean = false;
 
 
-  constructor(private router: Router) {
-  }
-  ngOnInit() {
-    let recipesJSON = localStorage.getItem("recipes")
-    if (recipesJSON) {
-      this.recipes = JSON.parse(recipesJSON)
-    }
-
-    console.log(this.recipes)
-    console.log("======  ")
-    this.dataSource = new MatTableDataSource<Recipe>(this.recipes);
-    console.log(this.recipes)
-
+  constructor(private router: Router, private userData: UserDataService) {
+    effect(() => {
+      this.dataSource = new MatTableDataSource<Recipe>(this.recipes());
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    })
   }
 
   ngAfterViewInit() {

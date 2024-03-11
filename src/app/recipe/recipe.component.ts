@@ -139,7 +139,7 @@ export class RecipeComponent {
         }
       })
     }
-    console.log(this.recipeMaker.favorites)
+    //console.log(this.recipeMaker.favorites())
   }
 
 
@@ -165,9 +165,5 @@ export class RecipeComponent {
       return `*${recipe.name}*\r\nIngredients:\n${recipe.ingredients.join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}\n\nDescription:\n${recipe.description}`;
     else
       return 'None found'
-  }
-
-  test() {
-    console.log(this.recipeMaker.favorites)
   }
 }

@@ -24,10 +24,8 @@ export class ToolbarComponent implements OnInit {
 
 
   ngOnInit(): void {
-    let email = this.auth.getUserEmail();
-    if (email) {
-      console.log(email)
-      this.auth.validateStoredTokens(email).subscribe(response => {
+    if (this.loggedIn()) {
+      this.auth.validateStoredTokens().subscribe(response => {
         console.log(response)
 
         if (!response.successfull) {
@@ -107,9 +105,10 @@ export class ToolbarComponent implements OnInit {
   logout() {
     this.auth.logout().subscribe(response => {
       if (response.successfull) {
-        console.log("deleting user info from local storage")
-        localStorage.removeItem("userInfo")
-        localStorage.removeItem("recipes")
+        //console.log("deleting user info from local storage")
+        //this.userData.deleteUserData()
+        // localStorage.removeItem("userInfo")
+        //localStorage.removeItem("recipes")
 
         this.router.navigate(['/'])
       }

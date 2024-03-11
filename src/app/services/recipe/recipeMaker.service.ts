@@ -3,19 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Recipe } from '../../interfaces/recipe.interface';
 import { recipe1, recipe2, recipe3 } from 'src/assets/recipes/exampleRecipes';
-//import { environment } from 'src/environments/environment.development';
 import { environment } from 'src/environments/environment';
+import { UserDataService } from '../user-data/user-data.service';
 
+/**
+ * Service that handles recipes creation and retrieval
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeMakerService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private userData: UserDataService) { }
   private serverAddress = environment.serverAddress;
 
   recipe: Recipe | undefined;
-  favorites: Recipe[] = [];
+  favorites = this.userData.getFavoriteRecipes()
 
   /**
    * Sends a request to the server in order to create a recipe
@@ -103,27 +106,17 @@ export class RecipeMakerService {
       withCredentials: true
     };
 
-    let email = '';
-    let localData = localStorage.getItem("userInfo")
-    if (localData) {
-      email = JSON.parse(localData).email;
-    }
-    console.log(email)
+    let email = this.userData.getUserEmail();
+
     const userData = {
       email: email,
       recipeId: recipe.id
     }
 
-    let stringRecipes = localStorage.getItem("recipes")
-    if (stringRecipes) {
-      this.favorites = JSON.parse(stringRecipes)
-    }
     return this.http.post(this.serverAddress + '/api/recipes/save', userData, httpOptions).pipe(
       tap(res => {
         console.log(res)
-        this.favorites.push(recipe)
-        console.log(this.favorites)
-        localStorage.setItem("recipes", JSON.stringify(this.favorites))
+        this.userData.updateFavoriteRecipes(recipe)
       }),
       catchError(this.handleError<any>('favorite'))
     )
@@ -157,14 +150,8 @@ export class RecipeMakerService {
    * @returns A boolean indicating whether the recipe is in favorites.
    */
   checkIfFavorite(recipeId: number) {
-
-    let stringRecipes = localStorage.getItem("recipes")
-    if (stringRecipes) {
-      this.favorites = JSON.parse(stringRecipes)
-    }
-
-    if (this.favorites.length > 0) {
-      return this.favorites.some(recipe => recipe.id === recipeId)
+    if (this.favorites().length > 0) {
+      return this.favorites().some(recipe => recipe.id === recipeId)
     }
 
     else {
