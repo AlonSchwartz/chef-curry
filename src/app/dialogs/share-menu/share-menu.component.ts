@@ -12,18 +12,21 @@ export class ShareMenuComponent {
   constructor(private _bottomSheetRef: MatBottomSheetRef<ShareMenuComponent>, @Inject(MAT_BOTTOM_SHEET_DATA) public data: any, private _snackBar: MatSnackBar) { }
 
   whatsappLink = 'https://web.whatsapp.com/send?text='; // Base URL
-  dynamicText = '!'; // Text to append 
+  dynamicText = ''; // Text to append on sharing
 
   ngOnInit() {
-    console.log(this.data)
     this.dynamicText = this.data.url;
 
     if (this.checkIfMobile())
       this.whatsappLink = 'whatsapp://send?text=';
   }
 
+  /**
+   * Handles the action triggered by clicking on a share option in the bottom sheet.
+   * Dismisses the bottom sheet after handling the action and optionally displays a snackbar message.
+   * @param withSnackbar Set to true if a snackbar message should be displayed after the action is handled.
+   */
   openLink(withSnackbar?: boolean): void {
-    // console.log(event)
     if (withSnackbar) {
       this._snackBar.open("Recipe URL copied to your clipboard. Enjoy!", "", {
         duration: 3000,
@@ -31,24 +34,24 @@ export class ShareMenuComponent {
       )
     }
     this._bottomSheetRef.dismiss();
-    // event.preventDefault();
-    console.log(this.data)
   }
 
+  /**
+   * Generates email with the recipe url
+   * @returns string that commands to open the default mail application and create the email
+   */
   generateMailtoLink(): string {
     const subject = 'Recipe from Chef Curry';
-    const body = 'Check out this recipe, i think you will like it: \r\n' + this.data.url;
+    const body = 'Check out this recipe, I think you will like it: \r\n' + this.data.url;
     const encodedSubject = encodeURIComponent(subject);
     const encodedBody = encodeURIComponent(body);
     return `mailto:?subject=${encodedSubject}&body=${encodedBody}`;
   }
 
-  open() {
-    this._snackBar.open("Copied to clipboard");
-    this._bottomSheetRef.dismiss();
-
-  }
-
+  /**
+   * Checks if the user is using a mobile phone
+   * @returns boolean that indicates the answer
+   */
   checkIfMobile(): boolean {
     var isMobile = false;
     // device detection

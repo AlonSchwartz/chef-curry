@@ -13,19 +13,17 @@ import { UserDataService } from '../services/user-data/user-data.service';
   styleUrls: ['./favorite-recipes.component.scss']
 })
 export class FavoriteRecipesComponent {
-  //  recipes: Recipe[] = [];
   recipes = this.userData.getFavoriteRecipes();
   displayedColumns: string[] = ['name', 'date', 'description'];
-  displayedColumns2: string[] = ['respFavorites'];
 
   dataSource = new MatTableDataSource<Recipe>();
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  //isPortrait: boolean = false;
-
 
   constructor(private router: Router, private userData: UserDataService) {
+
+    // When the recipes array are getting updated - update the favorite table as well.
     effect(() => {
       this.dataSource = new MatTableDataSource<Recipe>(this.recipes());
       this.dataSource.paginator = this.paginator;
@@ -33,12 +31,19 @@ export class FavoriteRecipesComponent {
     })
   }
 
+  /**
+   * Lifecycle hook that is called after Angular has fully initialized the component's view.
+   * Assigns paginator and sort references to the MatTableDataSource for enabling pagination and sorting functionality.
+   */
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-
   }
 
+  /**
+   * Opens a recipe from favorites
+   * @param recipe the recipe to open
+   */
   openRecipe(recipe: Recipe) {
     console.log(recipe)
     const navigationExtras = {
@@ -48,5 +53,4 @@ export class FavoriteRecipesComponent {
     };
     this.router.navigate(['viewRecipe'], navigationExtras);
   }
-
 }
