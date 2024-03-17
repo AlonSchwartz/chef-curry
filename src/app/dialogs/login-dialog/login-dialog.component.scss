@@ -5,6 +5,10 @@
     align-items: center;
     font-size: 1em;
 
+    mat-form-field:has(mat-error) {
+        padding-bottom: 5px;
+    }
+
     .change-form {
         padding: 1em 2em 1em 2em;
 

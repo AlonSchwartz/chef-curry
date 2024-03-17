@@ -7,7 +7,7 @@ export function passwordMatchValidator(): ValidatorFn {
 
         // console.log("checking for match")
         if (!password || !confirmPassword) {
-            console.log("no password at all")
+            console.log("at least one of the password fields is missing")
             //    console.log("password is " + password)
             //    console.log("confirmPassword is " + confirmPassword)
 

@@ -4,8 +4,18 @@ export function strongPasswordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const password = control.value;
 
+        //RIGHT NOW, IT DOESNT CHECK FOR SPACES IN THE PASSWORD.
+
+        //In case there is no password, trigger all validation errors
         if (!password) {
-            return null; // No validation if the field is empty
+            return {
+                weakPassword: true,
+                noUpperCase: true,
+                noLowerCase: true,
+                noDigit: true,
+                noSymbol: true,
+                tooShort: true
+            }
         }
 
         // add a check that there is no space in the password

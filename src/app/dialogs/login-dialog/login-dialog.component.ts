@@ -3,31 +3,28 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { strongPasswordValidator } from 'src/app/validators/strong-password.validator';
 import { passwordMatchValidator } from 'src/app/validators/password-match.validator';
 import { strictEmailValidator } from 'src/app/validators/strict-email.validator';
-import { MatTooltip } from '@angular/material/tooltip';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-dialog',
   templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss'],
 })
+
 export class LoginDialogComponent {
 
+  register_form: FormGroup;
+  login_form: FormGroup
   hasAccount: boolean = true;
-  register_form: FormGroup; // Create a form group
-  login_form: FormGroup//
-  isLoggingIn: boolean = false;
-  isRegistering: boolean = false;
-  registrationMessage = '';
-  loginMesseage = '';
+  isAuthenticating: boolean = false;
+  authMessage = '';
 
-  failedLogin: boolean | null = null;
-  isRegistrationSuccessful: boolean | null = null;
+  successfulLogin: boolean | null = null;
+  successfulRegister: boolean | null = null;
 
-  test2: boolean = false;
-
+  /** Validation related variables */
   passwordTooShort: boolean = true;
   passwordWithNoUpperCase: boolean = true;
   passwordWithNoLowerCase: boolean = true;
@@ -38,7 +35,9 @@ export class LoginDialogComponent {
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService,
     public dialogRef: MatDialogRef<LoginDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private _snackBar: MatSnackBar) {
+
+    //In cases where the dialog is opened from a suggestion to login/register
     if (this.data) {
       this.hasAccount = this.data.hasAccount;
     }
@@ -50,167 +49,124 @@ export class LoginDialogComponent {
         confirm_password: new FormControl('', [Validators.required])
       }, passwordMatchValidator()),
     }, { updateOn: 'change' })
+
     this.login_form = this.formBuilder.group({
       email: new FormControl('', [Validators.email, Validators.required]),
       password: new FormControl('', [Validators.required])
     }, { updateOn: 'change' })
 
+
     this.register_form.valueChanges.subscribe((value) => {
 
-      // If we dont have a value, but a value has been added
-      if (!this.hasValue) {
-        this.hasValue = true;
-      } else {
-
-        //In case the user deleted the values from the fields, and now the form is empty
-        if (!(value.email || value.passwordGroup.password || value.passwordGroup.confirm_password)) {
-          this.hasValue = false;
-        }
-      }
+      // Destruct value object and check if there is a value
+      const { email, passwordGroup: { password, confirm_password } } = value;
+      const hasValue = email || password || confirm_password;
+      this.hasValue = hasValue;
     })
 
     this.login_form.valueChanges.subscribe((value) => {
 
-      // If we dont have a value, but a value has been added
-      if (!this.hasValue) {
-        this.hasValue = true;
-      } else {
-
-        if (!(value.email || value.password)) {
-          this.hasValue = false;
-        }
-      }
+      // Destruct value object and check if there is a value
+      const { email, password } = value;
+      const hasValue = email || password
+      this.hasValue = hasValue
     })
 
-    this.register_form.get('passwordGroup')?.statusChanges.subscribe((value) => {
-      console.log(value)
-      const passwordErrors = this.register_form.get('passwordGroup')?.get('password')?.errors;
-      console.log(passwordErrors)
+    const passwordControl = this.register_form.get('passwordGroup')?.get('password');
 
+    passwordControl?.statusChanges.subscribe(() => {
+      const passwordErrors = passwordControl.errors;
       if (passwordErrors) {
-        if (passwordErrors['required']) {
-          this.passwordTooShort = true;
-          this.passwordWithNoUpperCase = true;
-          this.passwordWithNoLowerCase = true;
-          this.passwordWithNoDigit = true;
-          this.passwordWithNoSymbol = true;
-        }
-        else {
-          this.passwordTooShort = passwordErrors['tooShort'];
-          this.passwordWithNoUpperCase = passwordErrors['noUpperCase'];
-          this.passwordWithNoLowerCase = passwordErrors['noLowerCase'];
-          this.passwordWithNoDigit = passwordErrors['noDigit'];
-          this.passwordWithNoSymbol = passwordErrors['noSymbol'];
-        }
+        this.passwordTooShort = passwordErrors['tooShort'];
+        this.passwordWithNoUpperCase = passwordErrors['noUpperCase'];
+        this.passwordWithNoLowerCase = passwordErrors['noLowerCase'];
+        this.passwordWithNoDigit = passwordErrors['noDigit'];
+        this.passwordWithNoSymbol = passwordErrors['noSymbol'];
       }
     })
   }
 
+  /**
+   * Registers a user by sending the form data to the server for authentication, then
+   * handles the response from the server and updates UI accordingly.
+   */
   onRegister() {
     if (this.register_form.valid) {
-
-      console.log(this.register_form)
-      this.isRegistering = true;
+      this.isAuthenticating = true;
       const email = this.register_form.get('email')?.value;
       const password = this.register_form.get('passwordGroup')?.get('password')?.value;
 
       //send data to server over https
       if (email && password) {
-        const registerAttempt = this.auth.register(email, password).subscribe(res => {
+        this.auth.register(email, password).subscribe(res => {
+          this.isAuthenticating = false;
 
-          console.log("I got an answer, which is ")
-          console.log(res)
           if (res.succussfull) {
-            this.registrationMessage = res.title;
-            this.isRegistrationSuccessful = true;
+            this.successfulRegister = true;
             this.hasAccount = true;
-            console.log(document.cookie)
+            this.authMessage = res.title;
 
-            // this.saveInLocalStorage(email, [])
+            // We are updating the size because a confirmation message will appear
             this.dialogRef.updateSize();
-
           }
           else {
-            this.registrationMessage = res.message;
-            this.isRegistering = false;
-            this.isRegistrationSuccessful = false;
+            this.successfulRegister = false;
+            this.authMessage = res.message;
           }
         })
       }
-
     }
-
-
   }
 
+  /**
+   * Logs in a user by sending the form data to the server for authentication, then
+   * handles the response from the server and updates UI accordingly.
+   */
   onLogin() {
-    console.log(this.login_form)
+    this.isAuthenticating = true;
     const email = this.login_form.get('email')?.value;
     const password = this.login_form.get('password')?.value;
-    this.isLoggingIn = true;
-    //send data to the server over https
-    //in case the details are wrong, change failedLogin to true.
 
     if (email && password) {
-      const loginAttempt = this.auth.login(email, password).subscribe(res => {
-        console.log("Works?!!?!?!")
-        console.log(res)
+      this.auth.login(email, password).subscribe(res => {
+        this.isAuthenticating = false;
 
         if (res.succussfull) {
-          this.isLoggingIn = false;
-          this.failedLogin = false;
-          let recipes = [];
-          if (res.recipes) {
-            recipes = res.recipes;
-          }
-
-          //save basic user info on localStorage
-          //this.saveInLocalStorage(email, recipes);
-
+          this.successfulLogin = true;
           this.dialogRef.close()
+          this._snackBar.open("You're now logged in", "", {
+            duration: 1500
+          })
         }
         else {
-          this.failedLogin = true;
-          this.isLoggingIn = false;
+          this.successfulLogin = false;
 
-          console.log(res)
           if (res.message) {
-            this.loginMesseage = res.message;
+            this.authMessage = res.message;
           }
         }
       })
-
     }
   }
 
-  showTooltip(tool: MatTooltip) {
-    //tool.show()
-    //console.log(tool)
+  /**
+   * Switches login form to registeration, and vice versa
+   */
+  switchForm() {
+    this.hasAccount = !this.hasAccount;
+    this.authMessage = '';
+    this.successfulLogin = null;
+    this.successfulRegister = null;
   }
 
-  test() {
-    console.log(this.register_form)
-  }
-
-  handleClick(event: Event) {
+  /**
+   * Ensures the tooltip remains visible when the button is clicked by preventing
+   * the click event from propagating to other elements. 
+   *
+   * @param event The click event triggered by the button click.
+   */
+  keepTooltipVisible(event: Event) {
     event.stopPropagation(); // Prevent bubbling up to input field
-    //this.click.emit(event);
   }
 
-  /*
-  saveInLocalStorage(email: string, recipes: Recipe[]) {
-    const userInfo = {
-      "loggedIn": true,
-      "email": email
-    }
-
-    localStorage.setItem("userInfo", JSON.stringify(userInfo))
-    localStorage.setItem("recipes", JSON.stringify(recipes))
-
-  }*/
-
-  changeForm() {
-    console.log("Updateing size")
-    //this.dialogRef.updateSize()
-  }
 }

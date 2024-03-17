@@ -1,5 +1,5 @@
 <div class="container">
-    <div *ngIf="hasAccount && !isRegistrationSuccessful ">
+    <div *ngIf="hasAccount && !successfulRegister">
         <form [formGroup]="login_form" class="login_form" (ngSubmit)="onLogin()">
             <h1>Login</h1>
             <mat-form-field>
@@ -13,10 +13,11 @@
                 <mat-error *ngIf="!login_form.get('password')?.valid">Please enter password</mat-error>
             </mat-form-field>
 
-            <mat-error *ngIf="failedLogin">{{loginMesseage}}</mat-error>
+            <mat-error *ngIf="!successfulLogin && authMessage">{{authMessage}}</mat-error>
 
-            <button mat-raised-button class="btn_ask" color="primary" [disabled]="!login_form.valid || isLoggingIn ">
-                <ng-container *ngIf="isLoggingIn; else loginButtonContent">
+            <button mat-raised-button class="btn_ask" color="primary"
+                [disabled]="!login_form.valid || isAuthenticating ">
+                <ng-container *ngIf="isAuthenticating; else loginButtonContent">
                     <mat-spinner diameter="20" color="accent"></mat-spinner>
                 </ng-container>
                 <ng-template #loginButtonContent>
@@ -26,7 +27,7 @@
         </form>
 
         <div class="change-form">
-            Don't have an account? <span class="changeForm_btn" (click)="hasAccount=false"
+            Don't have an account? <span class="changeForm_btn" (click)="this.switchForm()"
                 title="switch to register form">
                 Register</span>
         </div>
@@ -40,7 +41,7 @@
                 <input matInput type="email" id="email" formControlName="email" autocomplete="email">
                 <button mat-icon-button matSuffix matTooltip="Your email address. Supports only .com and .co.il"
                     matTooltipPosition="above" matTooltipClass="register-tooltip" #emailTooltip="matTooltip"
-                    TooltipTouchGestures="false" (click)="handleClick($event); emailTooltip.show()">
+                    TooltipTouchGestures="false" (click)="keepTooltipVisible($event); emailTooltip.show()">
                     <mat-icon>help_outline</mat-icon>
                 </button>
                 <mat-error *ngIf="(!register_form.get('email')?.valid && register_form.get('email')?.dirty)">
@@ -54,7 +55,7 @@
                     <button mat-icon-button matSuffix
                         matTooltip="Must have at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 symbol."
                         matTooltipPosition="above" matTooltipClass="register-tooltip" #passwordTooltip="matTooltip"
-                        (click)="handleClick($event); passwordTooltip.show()" TooltipTouchGestures="false">
+                        (click)="keepTooltipVisible($event); passwordTooltip.show()" TooltipTouchGestures="false">
                         <mat-icon>help_outline</mat-icon>
                     </button>
                 </mat-form-field>
@@ -65,7 +66,7 @@
                         autocomplete="new-password" maxlength="32">
                     <button mat-icon-button matSuffix matTooltip="type your password again" matTooltipPosition="above"
                         matTooltipClass="register-tooltip" #repeatTooltip="matTooltip"
-                        (click)="handleClick($event); repeatTooltip.show()" TooltipTouchGestures="false">
+                        (click)="keepTooltipVisible($event); repeatTooltip.show()" TooltipTouchGestures="false">
                         <mat-icon>help_outline</mat-icon>
                     </button>
                     <mat-error *ngIf="register_form.get('passwordGroup')?.errors?.['passwordMismatch']">
@@ -86,11 +87,10 @@
                     </ul>
                 </mat-error>
             </div>
-            <br>
 
             <button mat-raised-button class="btn_ask" color="primary"
-                [disabled]="!register_form.valid || isRegistering ">
-                <ng-container *ngIf="isRegistering; else registerButtonContent">
+                [disabled]="!register_form.valid || isAuthenticating ">
+                <ng-container *ngIf="isAuthenticating; else registerButtonContent">
                     <mat-spinner diameter="20" color="accent"></mat-spinner>
                 </ng-container>
 
@@ -98,18 +98,18 @@
                     REGISTER
                 </ng-template>
             </button>
-            <mat-error *ngIf="registrationMessage!== ''">{{registrationMessage}}</mat-error>
+            <mat-error *ngIf="!successfulRegister && authMessage">{{authMessage}}</mat-error>
         </form>
 
         <div class="change-form">
-            Already have an account? <span class="changeForm_btn" (click)="hasAccount=true"
+            Already have an account? <span class="changeForm_btn" (click)="this.switchForm()"
                 title="switch to login form">
                 Login</span>
         </div>
     </div>
 
-    <div *ngIf="isRegistrationSuccessful && hasAccount" class="registrationMessage">
-        <h2> {{registrationMessage}}</h2>
+    <div *ngIf="successfulRegister && hasAccount" class="registrationMessage">
+        <h2> {{authMessage}}</h2>
         <p>You are now logged in.</p>
         <div>
             <button mat-raised-button mat-dialog-close color="primary">CLOSE</button>
