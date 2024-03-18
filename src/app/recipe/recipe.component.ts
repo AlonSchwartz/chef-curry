@@ -1,11 +1,11 @@
 import { Component, effect } from '@angular/core';
 import { RecipeMakerService } from '../services/recipe/recipeMaker.service';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
 import { AuthService } from '../services/auth/auth.service';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { ShareMenuComponent } from '../dialogs/share-menu/share-menu.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Recipe } from '../interfaces/recipe.interface';
 
 
 @Component({
@@ -16,14 +16,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RecipeComponent {
 
   someData: string | null = '';
-  recipe;
+  recipe: Recipe | undefined;
   isFavorite: boolean = false;
   loggedIn = this.auth.getLoggedInSignal();
   fav_title: string = "";
   isLoading: boolean = true;
 
+
   scrollToTop() {
-    console.log("Scrolling to top!")
     window.scrollTo(0, 0);
   }
 
@@ -43,8 +43,7 @@ export class RecipeComponent {
   }
   constructor(
     private recipeMaker: RecipeMakerService, private route: ActivatedRoute,
-    private location: Location, private auth: AuthService,
-    private _bottomSheet: MatBottomSheet,
+    private auth: AuthService, private _bottomSheet: MatBottomSheet,
     private _snackBar: MatSnackBar) {
 
     let recipe = this.recipeMaker.getRecipe()
@@ -54,33 +53,31 @@ export class RecipeComponent {
       this.isLoading = false;
     }
 
-    //////////////////
-
     this.route.queryParams.subscribe(() => {
       const recipeId = history.state.recipeId;
       const recipe = history.state.recipe;
+
+      // In case we are trying to load example recipe
       if (recipeId) {
         this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
         this.isLoading = false;
         this.isFavorite = true;
-        console.warn("1")
       }
+
+      // In case we are loading a recipe from favorites
       if (recipe) {
-        console.log("There is a recipe from history")
         this.recipe = recipe;
         this.isFavorite = true;
         this.isLoading = false;
       }
     });
 
-    //In order to load a recipe by url
+    //In order to load a recipe by url with hash
     this.route.params.subscribe(params => {
       const paramId = params['id']
       if (paramId) {
         this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
           this.isLoading = false;
-          console.log("It works?!?! 12")
-          console.log(res)
           if (res) {
             this.recipe = res;
             this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
@@ -90,16 +87,14 @@ export class RecipeComponent {
       }
     })
 
-
-    ///////////////////
-
+    //In case that signal value of loggedIn have been changed
     effect(() => {
-      console.log("IN RECIPE: signal value changed, and its now: ")
-      console.log(this.loggedIn())
-
-
       if (this.loggedIn()) {
-        console.warn("2")
+        if (this.recipe) {
+          //In case where the user signed in from the recipe page
+          this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
+        }
+
         if (this.isFavorite) {
           this.fav_title = "In Favorites"
         } else {
@@ -111,6 +106,9 @@ export class RecipeComponent {
     })
   }
 
+  /**
+   * Adding a recipe to favorites 
+   */
   addToFavorites() {
     if (this.isFavorite)
       return;
@@ -122,48 +120,31 @@ export class RecipeComponent {
       return;
     }
 
-    console.log(this.recipe)
     if (this.recipe) {
       this.recipeMaker.addToFavorites(this.recipe).subscribe(res => {
         if (res) {
-          console.log(res)
           this.isFavorite = true;
           this.fav_title = "In Favorites"
         }
         else {
           //create a message to notify the user that saving have failed.
-          console.log("Got an error.")
           this._snackBar.open("Adding to favorites failed.", '', {
             duration: 2000
           })
         }
       })
     }
-    //console.log(this.recipeMaker.favorites())
   }
 
-
-  get currentUrl(): string {
-    return this.location.path();
-  }
-  shareRecipe(text: string) {
-
-    console.log(this.recipe)
-    const link = 'https://chef-curry-umber.vercel.app/viewRecipe/' + this.recipe?.shareableHash; // change to website domain
-
+  /**
+   * Opens share bottom sheet
+   */
+  shareRecipe() {
+    const link = 'https://chef-curry-umber.vercel.app/viewRecipe/' + this.recipe?.shareableHash;
 
     this._bottomSheet.open(ShareMenuComponent, {
       data: { url: link }
     });
 
-  }
-
-  private buildShareText(): string {
-    // Customize this method based on how you want to construct the text for sharing
-    const recipe = this.recipe;
-    if (recipe)
-      return `*${recipe.name}*\r\nIngredients:\n${recipe.ingredients.join('\n')}\n\nInstructions:\n${recipe.instructions.join('\n')}\n\nDescription:\n${recipe.description}`;
-    else
-      return 'None found'
   }
 }

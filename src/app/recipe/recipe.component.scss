@@ -1,9 +1,7 @@
 .container {
-
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
     gap: 10px;
-
     text-align: center;
 
     background-image: url('../../assets/background5.jpg');
@@ -13,11 +11,9 @@
 
     min-height: 94dvh;
 
-
     li {
         list-style: none;
         text-align: center;
-
     }
 
     .instructions {
@@ -67,9 +63,7 @@
             border-radius: 45%;
             animation: spin 5s linear infinite, pause 2s;
         }
-
     }
-
 }
 
 @keyframes heartbeat {

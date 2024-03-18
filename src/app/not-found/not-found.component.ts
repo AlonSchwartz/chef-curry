@@ -14,7 +14,7 @@ export class NotFoundComponent {
   ngOnInit() {
     //in case we got here from a bad route
     if (this.route.snapshot.data['fromRoute']) {
-      this.errorMessage = " It seems we can't find this page. Please try again."
+      this.errorMessage = "It seems we can't find this page. Please try again."
     }
 
 

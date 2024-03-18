@@ -39,7 +39,8 @@ export const recipe1 = {
         "Garnish with freshly chopped cilantro.",
         "Serve the Meatball Curry hot with steamed rice or naan bread."
     ],
-    "shareableHash": 'example-1'
+    "shareableHash": 'example-1',
+    "date": '25.3.24'
 }
 
 export const recipe2 = {
@@ -66,7 +67,8 @@ export const recipe2 = {
         "Cover and simmer for 20-25 minutes, or until the chicken is cooked through and the potatoes are tender.",
         "Serve the Curry Lemon Chicken hot, and enjoy the delightful combination of citrusy lemon, savory chicken, and the comforting texture of potatoes. Perfect when paired with rice or crusty bread. Savor the rich flavors!"
     ],
-    "shareableHash": 'example-2'
+    "shareableHash": 'example-2',
+    "date": '25.3.24'
 }
 
 export const recipe3 = {
@@ -97,6 +99,7 @@ export const recipe3 = {
         "Let it simmer for 20-25 minutes, or until the chicken is cooked through and the potatoes are tender.",
         "Serve the Chicken and Potato Masala hot, garnished with fresh cilantro leaves. Enjoy the delightful combination of succulent chicken, tender potatoes, and aromatic spices!"
     ],
-    "shareableHash": 'example-3'
+    "shareableHash": 'example-3',
+    "date": '25.3.24'
 }
 

@@ -10,10 +10,10 @@ export class RecipeExamplesComponent {
 
   constructor(private router: Router) { }
 
-  viewRecipe(exampleRecipe: number) {
+  viewRecipe(exampleRecipeId: number) {
     const navigationExtras = {
       state: {
-        recipeId: exampleRecipe
+        recipeId: exampleRecipeId
       }
     };
     this.router.navigate(['viewRecipe'], navigationExtras);

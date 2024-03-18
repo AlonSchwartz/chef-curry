@@ -26,15 +26,14 @@
         <div class="actions">
             <mat-icon class="btn_love" [ngClass]="{ 'clicked': isFavorite }" [title]="fav_title"
                 (click)="addToFavorites()">favorite</mat-icon>
-            <mat-icon class="btn_share" (click)="shareRecipe('')">share</mat-icon>
-            <!--  <button (click)="test()"> CHECK</button>  -->
+            <mat-icon class="btn_share" (click)="shareRecipe()">share</mat-icon>
         </div>
     </div>
     <not-found *ngIf="!this.recipe && !this.isLoading"></not-found>
 
     <!-- We set a loading screen, in case the loading of the recipe from the server will take time -->
     <div class="loading-recipe" *ngIf="this.isLoading">
-        <img id="logo2" src="assets/logo8.png" alt="curry-logo">
+        <img id="logo2" src="assets/logo.png" alt="curry-logo">
     </div>
 
     <div class="spacer"> </div>
