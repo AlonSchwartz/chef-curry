@@ -6,10 +6,10 @@
                 {{this.recipe.name}}
             </h1>
         </div>
+
         <div class="content">
             <div class="ingredients">
                 <h2>Ingredients: </h2>
-
                 <li *ngFor="let ingredient of this.recipe?.ingredients"> {{ingredient}}</li>
             </div>
             <div class="instructions">
@@ -20,9 +20,9 @@
                 <p>
                     {{this.recipe.description}}
                 </p>
-
             </div>
         </div>
+
         <div class="actions">
             <mat-icon class="btn_love" [ngClass]="{ 'clicked': isFavorite }" [title]="fav_title"
                 (click)="addToFavorites()">favorite</mat-icon>

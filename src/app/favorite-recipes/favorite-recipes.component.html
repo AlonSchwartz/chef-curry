@@ -26,7 +26,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="table-columns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openRecipe(row)"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigateToRecipe(row)"></tr>
         </table>
 
         <mat-paginator [pageSizeOptions]="[5, 10]" [length]="dataSource.data.length" [pageSize]="5" showFirstLastButtons

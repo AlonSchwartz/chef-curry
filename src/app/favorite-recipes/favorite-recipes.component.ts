@@ -41,10 +41,10 @@ export class FavoriteRecipesComponent {
   }
 
   /**
-   * Opens a recipe from favorites
-   * @param recipe the recipe to open
+   * Navigates to recipe from favorites
+   * @param recipe the recipe to navigate to
    */
-  openRecipe(recipe: Recipe) {
+  navigateToRecipe(recipe: Recipe) {
     console.log(recipe)
     const navigationExtras = {
       state: {

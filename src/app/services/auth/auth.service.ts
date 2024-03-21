@@ -25,6 +25,8 @@ export class AuthService {
       console.warn(email)
       this.updateLoginStatus(true);
       this.userEmail = email;
+      this.userData.loadFavoriteRecipes()
+
     }
   }
 

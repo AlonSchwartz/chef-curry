@@ -1,12 +1,10 @@
 .container {
-
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
     text-align: center;
     height: calc(var(--backgroundHeight) + 20px);
-    background-image: url('../../assets/back-copy.jpg');
-    //background-image: url('../../assets/back-test3.jpg');
 
+    background-image: url('../../assets/back-copy.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -21,15 +19,12 @@
         display: grid;
         grid-template-columns: 1fr;
         gap: 20px;
-        /* Adjust the gap between grid items */
     }
 
     .grid-container {
         display: grid;
         grid-template-columns: 1fr;
-        /* Adjust the number of columns as needed */
         gap: 20px;
-        /* Adjust the gap between grid items */
     }
 
 
@@ -48,8 +43,6 @@
 
     .clear-btn {
         size: 10px;
-        // --mdc-icon-button-state-layer-size: 10px;
-
         --mdc-icon-button-state-layer-size: 24px;
         --mdc-icon-button-icon-size: 20px;
         padding: 0;
@@ -58,39 +51,23 @@
     .clear-icon {
         transform: scale(0.7);
         font-weight: bold;
-        vertical-align: middle;
-        /* Adjust vertical alignment */
-
+        vertical-align: middle; // Adjust vertical alignment 
         cursor: pointer;
-        //  margin-right: 10px;
-
     }
 
-
     .selected-items {
-        //  padding-top: 1em;
-        //color: black;
-
         display: grid;
-        //   grid-template-columns: repeat(auto-fit, minmax(200px, auto));
-        /* Responsive grid columns */
-        // gap: 10px;
-        /* Adjust the gap between grid items */
         justify-items: center;
-        /* Center items horizontally */
-
     }
 
     .selected-item {
         min-width: 200px;
         max-width: fit-content;
-
         display: flex;
         align-items: center;
         padding: 0.5rem;
         color: black;
         justify-self: left;
-
     }
 
     table {
@@ -100,7 +77,6 @@
     .action-td {
         align-items: right;
     }
-
 
     .clear-icon:hover {
         color: red;
@@ -128,11 +104,6 @@
         height: 600px;
     }
 
-    /*
-    .openKeyboard {
-        padding-top: 20px;
-    }*/
-
     //In order to change mat-radio-button label to white
     ::ng-deep .mdc-form-field>label {
         color: white;
@@ -144,16 +115,12 @@
 }
 
 #logo {
-
     border-radius: 45%;
     width: 20vh;
     align-self: center;
-    max-width: 100%;
-    /* Limit the width of the photo to its parent container */
-    height: auto;
-    /* Maintain the aspect ratio and adjust the height accordingly */
+    max-width: 100%; //Limit the width of the photo to its parent container
+    height: auto; //Maintain the aspect ratio and adjust the height accordingly
     padding-top: 5px;
-
 }
 
 .loading-recipe {
@@ -162,8 +129,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    // backdrop-filter: blur(5px);
-    transform: translate(-50%, -50%);
 
     #logo2 {
         max-width: 100%;
@@ -198,7 +163,6 @@
 @media (max-width: 852px) and (min-width: 724px) {
     .container {
         background-size: 120%;
-
     }
 }
 
@@ -206,6 +170,5 @@
 @media (min-height: 1140px) and (min-width: 724px) {
     .container {
         background-size: cover;
-
     }
 }

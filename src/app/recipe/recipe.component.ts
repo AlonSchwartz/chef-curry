@@ -46,6 +46,7 @@ export class RecipeComponent {
     private auth: AuthService, private _bottomSheet: MatBottomSheet,
     private _snackBar: MatSnackBar) {
 
+    //In case the recipe was just created
     let recipe = this.recipeMaker.getRecipe()
     this.recipe = recipe;
 
@@ -53,39 +54,9 @@ export class RecipeComponent {
       this.isLoading = false;
     }
 
-    this.route.queryParams.subscribe(() => {
-      const recipeId = history.state.recipeId;
-      const recipe = history.state.recipe;
-
-      // In case we are trying to load example recipe
-      if (recipeId) {
-        this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
-        this.isLoading = false;
-        this.isFavorite = true;
-      }
-
-      // In case we are loading a recipe from favorites
-      if (recipe) {
-        this.recipe = recipe;
-        this.isFavorite = true;
-        this.isLoading = false;
-      }
-    });
-
-    //In order to load a recipe by url with hash
-    this.route.params.subscribe(params => {
-      const paramId = params['id']
-      if (paramId) {
-        this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
-          this.isLoading = false;
-          if (res) {
-            this.recipe = res;
-            this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
-            console.log("favorite? " + this.isFavorite)
-          }
-        })
-      }
-    })
+    else {
+      this.loadRecipeByUrl()
+    }
 
     //In case that signal value of loggedIn have been changed
     effect(() => {
@@ -102,6 +73,47 @@ export class RecipeComponent {
         }
       } else {
         this.fav_title = "You have to be logged in"
+      }
+    })
+  }
+
+  /**
+   * Loads a recipe based on url
+   */
+  loadRecipeByUrl() {
+    this.route.queryParams.subscribe(() => {
+
+      // If we got here from favorites or homepage, there will be 2 elements in history state
+      if (Object.keys(history.state).length > 1) {
+        const recipeId = history.state.recipeId;
+        const recipe = history.state.recipe;
+
+        this.isLoading = false;
+        this.isFavorite = true;
+
+        if (recipeId) {
+          console.warn("recipeId")
+          this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
+        }
+        else if (recipe) {
+          console.warn("just recipe")
+          this.recipe = recipe;
+        }
+      }
+    });
+
+    //In order to load a recipe by url with hash
+    this.route.params.subscribe(params => {
+      const paramId = params['id']
+      if (paramId) {
+        this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
+          this.isLoading = false;
+          if (res) {
+            this.recipe = res;
+            this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
+            console.log("favorite? " + this.isFavorite)
+          }
+        })
       }
     })
   }
@@ -145,6 +157,5 @@ export class RecipeComponent {
     this._bottomSheet.open(ShareMenuComponent, {
       data: { url: link }
     });
-
   }
 }
