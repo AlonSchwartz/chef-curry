@@ -21,7 +21,7 @@
                     <mat-form-field class="dense-1" color="primary">
                         <mat-label>Ingredients</mat-label>
                         <input type="text" matInput [matAutocomplete]="auto" formControlName="userInput"
-                            (input)="onInputChanged()" (focus)="onInputChanged()" (focusout)="closeOptionsList()">
+                            (input)="onInputChanged()" (focus)="onInputChanged()">
                         <mat-autocomplete #auto="matAutocomplete"
                             (optionSelected)="addSelectedItem($event.option.value)">
                             <mat-option *ngFor="let item of filteredItems | async" [value]="item" id="auto">
@@ -29,7 +29,7 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-                    <div *ngIf="(this.selectedItems.length == 0 && form.get('userInput')?.touched )">
+                    <div *ngIf="(form.get('selectedItems')?.invalid && form.get('userInput')?.touched )">
                         <br>
                         <mat-error>Please enter an ingredient.</mat-error>
                     </div>
@@ -37,7 +37,7 @@
 
                 <div class="selected-items">
                     <div class="selected-items">
-                        <div *ngFor="let selectedItem of selectedItems" class="selected-item">
+                        <div *ngFor="let selectedItem of form.get('selectedItems')?.value" class="selected-item">
                             <mat-icon class="clear-icon" (click)="removeSelectedItem(selectedItem)">clear</mat-icon>
                             <div class="item-content">{{ selectedItem }}</div>
                         </div>
@@ -47,7 +47,7 @@
         </div>
 
         <button mat-raised-button class="btn_ask" color="primary" (click)="submitForm()"
-            [disabled]="this.selectedItems.length == 0 || isCreating">
+            [disabled]="form.invalid || isCreating">
             <ng-container *ngIf="isCreating; else createDish">
                 <mat-spinner diameter="20" color="accent"></mat-spinner>
             </ng-container>

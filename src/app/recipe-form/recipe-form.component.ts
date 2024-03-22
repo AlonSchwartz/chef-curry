@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IngredientService } from '../services/ingredient/ingredient.service';
 import { RecipeMakerService } from '../services/recipe/recipeMaker.service';
 import { Router } from '@angular/router';
@@ -18,8 +18,6 @@ import { AuthService } from '../services/auth/auth.service';
 
 })
 export class RecipeFormComponent implements AfterViewInit {
-  isTouchable = "ontouchend" in document
-
   @ViewChild('userInputDiv')
   inputDiv!: ElementRef;
 
@@ -28,18 +26,15 @@ export class RecipeFormComponent implements AfterViewInit {
 
   items: string[] = [];
 
-  userInput = '';
-  selectedItems: any[] = [];
   filteredItems!: Observable<any[]>;
-  filteredItems2: string[] = [];
   isCreating: boolean = false;
   loggedIn = this.auth.getLoggedInSignal();
   dontShowAgain: boolean = false;
   isPopupOpen: boolean = false;
   mobileKeyboardOpen: boolean = false;
   previousTag: string | null = null;
-  inputHeight: string = '0px'
-  form: FormGroup; // Create a form group
+  inputHeight: string = '375px'
+  form: FormGroup;
   warningDisplayed: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
@@ -50,15 +45,17 @@ export class RecipeFormComponent implements AfterViewInit {
     private auth: AuthService) {
     this.form = this.formBuilder.group({
       withAdditionalIngredients: [true],
-      userInput: new FormControl(''), // Use a FormControl for the userInput
-      //selectedItems: [[]] // Initialize selectedItems as an empty array
+      userInput: new FormControl(''),
+      selectedItems: new FormControl<string[]>([], Validators.required)
     });
 
   }
 
+  /**
+   * Checks if the users is using a mobile phone
+   * @returns boolean that indicates the answer
+   */
   checkIfMobile(): boolean {
-    //console.log("Touchscren? " + this.isTouchable)
-
     var isMobile = false;
     // device detection
     if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
@@ -68,38 +65,29 @@ export class RecipeFormComponent implements AfterViewInit {
     return isMobile;
   }
 
-  closeOptionsList() {
-    //this.mobileKeyboardOpen = false;
-
-    //console.log("Closing the keyboard.")
-  }
-
   ngAfterViewInit(): void {
-
     setTimeout(() => {
       this.adjustBackgroundHeight(); // We are calling this to make sure that the design will fit the screen size on loading
     }, 15); // really small timeout, so all the divs will load properly
   }
 
-
-
+  /**
+   * Creates a space for keyboard in mobile devices and scrolling down, in order to have better view on the ingredients list.
+   * Without this function, the ingredients list will be hidden by the keyboard on some devices.
+   */
   showKeyboardSpacer() {
     if (this.checkIfMobile()) {
       if (this.mobileKeyboardOpen) {
-        console.warn("returning")
         return;
       }
 
       this.mobileKeyboardOpen = true;
-
       const headerPosition = this.mainHeader.nativeElement.offsetTop;
 
-      setTimeout(() => {
-        console.log("Scrolling to " + headerPosition)
-        console.log(this.mobileKeyboardOpen)
+      // Schedule scroll operation to happen just before the next repaint for a smoother scrolling experience.
+      requestAnimationFrame(() => {
         window.scrollTo(0, headerPosition);
-
-      }, 15);
+      });
     }
   }
 
@@ -125,13 +113,6 @@ export class RecipeFormComponent implements AfterViewInit {
     if (!this.loggedIn() && !this.dontShowAgain) {
       this.openPopup('suggest-login');
     }
-  }
-
-  /**
-   * Cleaning up when destroying the component
-   */
-  ngOnDestroy(): void {
-    window.removeEventListener('resize', this.adjustBackgroundHeight)
   }
 
   /**
@@ -169,7 +150,6 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   scrollToTop() {
-    console.log("Scrolling to top!")
     window.scrollTo(0, 0);
   }
 
@@ -194,42 +174,35 @@ export class RecipeFormComponent implements AfterViewInit {
 
 
   addSelectedItem(item: string) {
-    if (!this.selectedItems.includes(item)) {
-      this.selectedItems.push(item);
-      this.userInput = '';
-      console.log("User input reset")
-    }
-    else {
-      console.log("Already selected.")
-      this.userInput = '';
-      console.log(this.userInput)
+    const selectedItemsControl = this.form.get('selectedItems');
+    if (selectedItemsControl) {
+      if (!selectedItemsControl.value.includes(item)) {
+        selectedItemsControl.setValue([...selectedItemsControl.value, item]);
+      } else {
+        console.log("Already selected.")
+      }
     }
 
     this.form.controls['userInput'].setValue('');
   }
 
-  removeSelectedItem(item: any) {
-    console.log(item)
-    const index = this.selectedItems.indexOf(item);
-    if (index !== -1) {
-      this.selectedItems.splice(index, 1);
-      //  this.form.controls['userInput'].reset();  //will reset all the selections
-      console.log(this.form.controls['userInput'])
+  removeSelectedItem(item: string) {
+    const selectedItemsControl = this.form.get('selectedItems');
+    if (selectedItemsControl) {
+      selectedItemsControl.setValue(
+        selectedItemsControl.value.filter((selectedItem: string) => selectedItem !== item)
+      );
     }
   }
-  /*
-    preventTouchScroll(event: TouchEvent) {
-      // event.preventDefault();
-      console.log(event)
-    }*/
 
   submitForm() {
     this.isCreating = true;
     let withAdditionalIngredients = this.form.get('withAdditionalIngredients')?.value;
+    const ingredients = this.form.get('selectedItems')?.value
 
     const recipeReq = {
       "withAdditionalIngredients": withAdditionalIngredients,
-      "items": this.selectedItems
+      "ingredients": ingredients
     }
 
     const startTime = performance.now();
@@ -262,24 +235,6 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
 
-  //////////////////////////////////////////////
-  removeItem(item: any) {
-    const index = this.selectedItems.indexOf(item);
-    if (index !== -1) {
-      this.selectedItems.splice(index, 1);
-    }
-  }
-
-  printItems() {
-    console.log(this.selectedItems)
-    let e = {
-      "a": "first parameter",
-      "b": [["some data", "more data"], ["second array", "with more info"]],
-      "c": "some text that doesnt mean anything, its just for the check",
-      "d": "i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. i will do copy and paste to this text, in order to make it really long. "
-    }
-    this.router.navigate(['viewRecipe', { state: e }])
-  }
 
   openPopup(popupType: string) {
     console.log("Opening popup! type is " + popupType)
