@@ -1,6 +1,5 @@
 import { Component, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IngredientService } from '../services/ingredient/ingredient.service';
 import { RecipeMakerService } from '../services/recipe/recipeMaker.service';
@@ -10,6 +9,7 @@ import { NotFoundComponent } from '../not-found/not-found.component';
 import { ChefMessagesComponent } from '../dialogs/chef-messages/chef-messages.component';
 import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
 import { AuthService } from '../services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-recipe-form',
@@ -25,24 +25,22 @@ export class RecipeFormComponent implements AfterViewInit {
   mainHeader!: ElementRef;
 
   items: string[] = [];
-
-  filteredItems!: Observable<any[]>;
-  isCreating: boolean = false;
-  loggedIn = this.auth.getLoggedInSignal();
-  dontShowAgain: boolean = false;
-  isPopupOpen: boolean = false;
-  mobileKeyboardOpen: boolean = false;
-  previousTag: string | null = null;
-  inputHeight: string = '375px'
   form: FormGroup;
+  isloggedIn = this.auth.getLoggedInSignal();
+  filteredItems!: Observable<string[]>;
+  isCreating: boolean = false;
+  dontShowAgain: boolean = false;
+  mobileKeyboardOpen: boolean = false;
   warningDisplayed: boolean = false;
+  inputHeight: string = '375px';
 
   constructor(private formBuilder: FormBuilder,
     private dictionary: IngredientService,
     private recipeMaker: RecipeMakerService,
     private router: Router,
     public dialog: MatDialog,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private _snackBar: MatSnackBar) {
     this.form = this.formBuilder.group({
       withAdditionalIngredients: [true],
       userInput: new FormControl(''),
@@ -75,7 +73,7 @@ export class RecipeFormComponent implements AfterViewInit {
    * Creates a space for keyboard in mobile devices and scrolling down, in order to have better view on the ingredients list.
    * Without this function, the ingredients list will be hidden by the keyboard on some devices.
    */
-  showKeyboardSpacer() {
+  manageKeyboardSpacer() {
     if (this.checkIfMobile()) {
       if (this.mobileKeyboardOpen) {
         return;
@@ -92,16 +90,9 @@ export class RecipeFormComponent implements AfterViewInit {
   }
 
   ngOnInit() {
-
     if (window.scrollY > 0) {
       this.scrollToTop();
     }
-
-    // Initialize the userInput form control
-    this.filteredItems = this.form.controls['userInput'].valueChanges.pipe(
-      startWith(''),
-      map(value => this._filterItems(value as string))
-    );
 
     //Getting user display settings from local storage
     let userDisplaySetting = localStorage.getItem('dontShowAgain')
@@ -109,83 +100,74 @@ export class RecipeFormComponent implements AfterViewInit {
       this.dontShowAgain = JSON.parse(userDisplaySetting);
     }
 
-    // suggest the user to login, only if he is not logged and he did not asked to hide this message
-    if (!this.loggedIn() && !this.dontShowAgain) {
+    // Suggest the user to login, only if he is not logged and he did not asked to hide this message
+    if (!this.isloggedIn() && !this.dontShowAgain) {
       this.openPopup('suggest-login');
     }
   }
 
   /**
-   * Adjusting background image height to be from the top of the page, to the exact spot in every device screen.
-   * The desired spot is inside a different div.
+   * Retrieves all items (e.g ingredients) containing a ceratin value from the ingredient trie service
+   * @param value the input value search for matches.
+   * @returns an array of matching items.
    */
-  @HostListener('window:resize', ['$event'])
-  adjustBackgroundHeight() {
-
-    if (this.inputDiv) {
-      const newInputHeight = this.inputDiv.nativeElement.offsetTop + "px"
-
-      if (newInputHeight !== this.inputHeight) {
-        console.log(newInputHeight)
-        console.log(this.inputHeight)
-        this.inputHeight = newInputHeight;
-      }
-    }
-  }
-
-  private _filterItems(value: string): any[] {
+  private _retrieveItems(value: string): any[] {
     if (value.length == 0) {
       return [];
     }
-    if (value.length == 1) {
-      this.items = this.dictionary.onInputChange(value)
 
-    }
     this.items = this.dictionary.onInputChange(value)
 
-    const filterValue = value.toLowerCase();
-
-    // Simulate lazy loading here based on the filterValue
-    return this.items.filter(item => item.toLowerCase().includes(filterValue));
+    return this.items;
   }
 
-  scrollToTop() {
-    window.scrollTo(0, 0);
-  }
-
+  /**
+   * Handles changes in the input value of a form control.
+   * 
+   * Retrieves the current input value from the form control and determines
+   * whether to show filtered options based on the input.
+   */
   onInputChanged() {
-    // Simulate lazy loading here based on this.userInput
     const inputValue = this.form.controls['userInput'].value;
 
     if (inputValue === '') {
-      this.showKeyboardSpacer();
+      this.manageKeyboardSpacer();
+
       // If the input is empty, don't show any options
-      this.filteredItems = new Observable<any[]>(observer => {
+      this.filteredItems = new Observable<string[]>(observer => {
         observer.next([]);
       });
     }
     else {
       this.filteredItems = new Observable<string[]>(observer => {
-        observer.next(this._filterItems(this.form.controls['userInput'].value));
+        observer.next(this._retrieveItems(this.form.controls['userInput'].value));
       });
     }
   }
 
-
-
+  /**
+   * Adds selected item to the selected items form control
+   * @param item the item to add
+   */
   addSelectedItem(item: string) {
     const selectedItemsControl = this.form.get('selectedItems');
     if (selectedItemsControl) {
       if (!selectedItemsControl.value.includes(item)) {
         selectedItemsControl.setValue([...selectedItemsControl.value, item]);
       } else {
-        console.log("Already selected.")
+        this._snackBar.open("Already selected.", '', {
+          duration: 1500
+        })
       }
     }
 
     this.form.controls['userInput'].setValue('');
   }
 
+  /**
+   * Remove selected item from the selected items form control
+   * @param item the item to remove
+   */
   removeSelectedItem(item: string) {
     const selectedItemsControl = this.form.get('selectedItems');
     if (selectedItemsControl) {
@@ -195,6 +177,9 @@ export class RecipeFormComponent implements AfterViewInit {
     }
   }
 
+  /**
+   * Submit the recipe creation form to the server and handles response
+   */
   submitForm() {
     this.isCreating = true;
     let withAdditionalIngredients = this.form.get('withAdditionalIngredients')?.value;
@@ -205,39 +190,22 @@ export class RecipeFormComponent implements AfterViewInit {
       "ingredients": ingredients
     }
 
-    const startTime = performance.now();
-
     this.recipeMaker.createRecipe(recipeReq).subscribe((res: Object) => {
       this.isCreating = false;
       if (res) {
-        const endTime = performance.now();
-        const elapsedTime = endTime - startTime;
-        console.warn(`Elapsed time: ${elapsedTime} ms`);
-
         this.router.navigate(['viewRecipe'])
       }
       else {
-        const endTime = performance.now();
-        const elapsedTime = endTime - startTime;
-        console.warn(`Elapsed time: ${elapsedTime} ms`);
-
-        const dialogRef = this.dialog.open(NotFoundComponent, {
-          //   width: "35vh",
-          //  height: "58vh"
-        })
-        //TODO: Add error handling here. what to do when it fails?
+        this.dialog.open(NotFoundComponent, {})
       }
-
     })
-    //  this.router.navigate(['viewRecipe'], { state: { recipe: res } })
-
-    // console.log(recipeReq)
   }
 
-
-
+  /**
+   * Opens a popup based on the recieved type
+   * @param popupType the popup type
+   */
   openPopup(popupType: string) {
-    console.log("Opening popup! type is " + popupType)
     if (popupType === 'ingredients-warn' && this.warningDisplayed) {
       return;
     }
@@ -249,14 +217,7 @@ export class RecipeFormComponent implements AfterViewInit {
       disableClose: true
     })
 
-    dialogRef.afterOpened().subscribe(() => {
-
-      this.isPopupOpen = true;
-
-    })
-
     dialogRef.afterClosed().subscribe(result => {
-      this.isPopupOpen = false;
       if (result) {
         if (result.dontShowAgain) {
           this.dontShowAgain = true;
@@ -264,9 +225,7 @@ export class RecipeFormComponent implements AfterViewInit {
         };
 
         if (result.hasAccount != undefined) {
-          const loginDialog = this.dialog.open(LoginDialogComponent, {
-            //width: "35vh",
-            //  height: "58vh",
+          this.dialog.open(LoginDialogComponent, {
             data: {
               hasAccount: result.hasAccount
             }
@@ -278,7 +237,29 @@ export class RecipeFormComponent implements AfterViewInit {
         this.warningDisplayed = true;
       }
     })
+  }
 
+  /**
+   * Scrolls to the top of the page.
+   */
+  scrollToTop() {
+    window.scrollTo(0, 0);
+  }
+
+  /**
+   * Adjusting background image height to be from the top of the page, to the exact spot in every device screen.
+   * 
+   * The desired spot is inside a different div.
+   */
+  @HostListener('window:resize', ['$event'])
+  adjustBackgroundHeight() {
+    if (this.inputDiv) {
+      const newInputHeight = this.inputDiv.nativeElement.offsetTop + "px"
+
+      if (newInputHeight !== this.inputHeight) {
+        this.inputHeight = newInputHeight;
+      }
+    }
   }
 
   /**
@@ -298,6 +279,4 @@ export class RecipeFormComponent implements AfterViewInit {
       }
     }
   }
-
 }
-
