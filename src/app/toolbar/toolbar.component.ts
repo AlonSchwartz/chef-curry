@@ -1,5 +1,5 @@
-import { Component, OnInit, effect } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
@@ -14,17 +14,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private auth: AuthService, private router: Router, private _snackBar: MatSnackBar) {
+  constructor(public dialog: MatDialog,
+    private auth: AuthService,
+    private router: Router,
+    private _snackBar: MatSnackBar) { }
 
-    effect(() => {
-      console.log("Just a check...")
-    })
-  }
-  loggedIn = this.auth.getLoggedInSignal();
-
+  isLoggedIn = this.auth.getLoggedInSignal();
 
   ngOnInit(): void {
-    if (this.loggedIn()) {
+    if (this.isLoggedIn()) {
       this.auth.validateStoredTokens().subscribe(response => {
         console.log(response)
 
@@ -35,14 +33,16 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
-  openSignDiaglog() { //change the name of this function
+  /**
+   * Opens a dialog for user authentication, allowing users to login or to register.
+   */
+  openAuthDialog() {
     const dialogRef = this.dialog.open(LoginDialogComponent, {
       disableClose: true
     })
 
+    // Handles in case of clicks outside the dialog
     dialogRef.backdropClick().subscribe(() => {
-      console.log("Backdrop click")
-
       if (dialogRef.componentInstance.hasValue) {
         this.askForConfirmation().then(toClose => {
 
@@ -50,17 +50,15 @@ export class ToolbarComponent implements OnInit {
             dialogRef.close()
           }
         })
-
       }
       else {
         dialogRef.close()
       }
     })
 
+    // Handles in case of ESC button pressed
     dialogRef.keydownEvents().subscribe(event => {
       if (event.key === "Escape") {
-        console.log(event)
-
         if (dialogRef.componentInstance.hasValue) {
           this.askForConfirmation().then(toClose => {
 
@@ -74,6 +72,7 @@ export class ToolbarComponent implements OnInit {
         }
       }
     })
+
   }
 
   /**
@@ -81,7 +80,6 @@ export class ToolbarComponent implements OnInit {
    * @returns promise that contains the answer
    */
   askForConfirmation() {
-
     return new Promise((resolve, reject) => {
       const confiramtionDialogRef = this.dialog.open(ChefMessagesComponent, {
         data: {
@@ -92,7 +90,6 @@ export class ToolbarComponent implements OnInit {
       });
 
       confiramtionDialogRef.afterClosed().subscribe(res => {
-        console.log(res)
         if (res.toClose) {
           resolve(true);
         } else {
@@ -102,18 +99,15 @@ export class ToolbarComponent implements OnInit {
     });
   }
 
+  /**
+   *  Initiates a user logout process.
+   */
   logout() {
     this.auth.logout().subscribe(response => {
       if (response.successfull) {
-        //console.log("deleting user info from local storage")
-        //this.userData.deleteUserData()
-        // localStorage.removeItem("userInfo")
-        //localStorage.removeItem("recipes")
-
         this.router.navigate(['/'])
       }
       else {
-        console.log("Failed?!")
         this._snackBar.open("Logout failed", "", {
           duration: 1500
         })
@@ -121,6 +115,9 @@ export class ToolbarComponent implements OnInit {
     })
   }
 
+  /**
+   * Opens favorites page
+   */
   openFavorites() {
     this.router.navigate(['favorites'])
   }

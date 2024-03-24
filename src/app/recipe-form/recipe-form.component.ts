@@ -26,7 +26,7 @@ export class RecipeFormComponent implements AfterViewInit {
 
   items: string[] = [];
   form: FormGroup;
-  isloggedIn = this.auth.getLoggedInSignal();
+  isLoggedIn = this.auth.getLoggedInSignal();
   filteredItems!: Observable<string[]>;
   isCreating: boolean = false;
   dontShowAgain: boolean = false;
@@ -101,7 +101,7 @@ export class RecipeFormComponent implements AfterViewInit {
     }
 
     // Suggest the user to login, only if he is not logged and he did not asked to hide this message
-    if (!this.isloggedIn() && !this.dontShowAgain) {
+    if (!this.isLoggedIn() && !this.dontShowAgain) {
       this.openPopup('suggest-login');
     }
   }

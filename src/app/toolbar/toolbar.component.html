@@ -1,11 +1,11 @@
 <div class="toolbar">
     <img width="35" src="assets/logocopy.jpeg" [routerLink]="''">
     <div class="spacer"></div>
-    <span class="login_btn" *ngIf="!loggedIn()" (click)="openSignDiaglog()">Login</span>
+    <span class="login_btn" *ngIf="!isLoggedIn()" (click)="openAuthDialog()">Login</span>
 
     <!-- Logged In icon is below-->
     <a aria-label="account" target="_blank" rel="noopener" title="account" [matMenuTriggerFor]="loggedMenu"
-        *ngIf="loggedIn()">
+        *ngIf="isLoggedIn()">
         <svg id="user-account" height="35" data-name="Logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"
             width="35">
             <path

@@ -24,15 +24,7 @@ export class IngredientService {
    * @returns An array of suggestions based on the input, capped at the defined threshold.
    */
   onInputChange(inputValue: string): string[] {
-    const startTime = performance.now();
-    console.log(inputValue)
-
     const suggestions = this.trie.search(inputValue.toLowerCase());
-
-
-    const endTime = performance.now();
-    const elapsedTime = endTime - startTime;
-    console.log(`Elapsed time: ${elapsedTime} ms`);
 
     // make it faster, as we taking results up to the threshold.
     if (suggestions.length > this.threshold) {
