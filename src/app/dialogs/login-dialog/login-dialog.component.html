@@ -9,7 +9,11 @@
             </mat-form-field>
             <mat-form-field>
                 <mat-label for="password">Password:</mat-label>
-                <input type="password" matInput autocomplete="current-password" formControlName="password">
+                <input type="password" matInput [type]="passwordVisible ? 'text' : 'password'"
+                    autocomplete="current-password" formControlName="password" #passwordInput>
+                <mat-icon matSuffix (click)="togglePasswordVisibility()">
+                    {{ passwordVisible ? 'visibility_off' : 'visibility' }}
+                </mat-icon>
                 <mat-error *ngIf="!login_form.get('password')?.valid">Please enter password</mat-error>
             </mat-form-field>
 
@@ -38,7 +42,7 @@
             <h1>Register</h1>
             <mat-form-field>
                 <mat-label for="email">Email:</mat-label>
-                <input matInput type="email" id="email" formControlName="email" autocomplete="email">
+                <input matInput type="email" id="email" formControlName="email" autocomplete="email" #passwordInput>
                 <button mat-icon-button matSuffix matTooltip="Your email address. Supports only .com and .co.il"
                     matTooltipPosition="above" matTooltipClass="register-tooltip" #emailTooltip="matTooltip"
                     TooltipTouchGestures="false" (click)="keepTooltipVisible($event); emailTooltip.show()">
@@ -50,8 +54,8 @@
             <div formGroupName="passwordGroup">
                 <mat-form-field>
                     <mat-label for="password">Password:</mat-label>
-                    <input matInput type="password" id="password" formControlName="password" autocomplete="new-password"
-                        maxlength="32">
+                    <input matInput [type]="passwordVisible ? 'text' : 'password'" id="password"
+                        formControlName="password" autocomplete="new-password" maxlength="32">
                     <button mat-icon-button matSuffix
                         matTooltip="Must have at least 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 symbol."
                         matTooltipPosition="above" matTooltipClass="register-tooltip" #passwordTooltip="matTooltip"
@@ -59,11 +63,10 @@
                         <mat-icon>help_outline</mat-icon>
                     </button>
                 </mat-form-field>
-
                 <mat-form-field>
                     <mat-label for="password">confirm password:</mat-label>
-                    <input matInput type="password" id="confirm_password" formControlName="confirm_password"
-                        autocomplete="new-password" maxlength="32">
+                    <input matInput [type]="passwordVisible ? 'text' : 'password'" id="confirm_password"
+                        formControlName="confirm_password" autocomplete="new-password" maxlength="32">
                     <button mat-icon-button matSuffix matTooltip="type your password again" matTooltipPosition="above"
                         matTooltipClass="register-tooltip" #repeatTooltip="matTooltip"
                         (click)="keepTooltipVisible($event); repeatTooltip.show()" TooltipTouchGestures="false">
@@ -73,7 +76,6 @@
                         Passwords do not match
                     </mat-error>
                 </mat-form-field>
-
                 <mat-error
                     *ngIf="(!register_form.get('passwordGroup.password')?.valid && register_form.get('passwordGroup.password')?.dirty)">
 
@@ -88,12 +90,14 @@
                 </mat-error>
             </div>
 
+            <mat-checkbox matSuffix (click)="togglePasswordVisibility()">
+                Show Password
+            </mat-checkbox>
             <button mat-raised-button class="btn_ask" color="primary"
                 [disabled]="!register_form.valid || isAuthenticating ">
                 <ng-container *ngIf="isAuthenticating; else registerButtonContent">
                     <mat-spinner diameter="20" color="accent"></mat-spinner>
                 </ng-container>
-
                 <ng-template #registerButtonContent>
                     REGISTER
                 </ng-template>

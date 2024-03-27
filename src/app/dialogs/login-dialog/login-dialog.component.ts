@@ -31,7 +31,9 @@ export class LoginDialogComponent {
   passwordWithNoDigit: boolean = true;
   passwordWithNoSymbol: boolean = true;
 
-  hasValue: boolean = false;
+  passwordVisible: boolean = false;
+
+  formHasValue: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private auth: AuthService,
     public dialogRef: MatDialogRef<LoginDialogComponent>,
@@ -61,7 +63,7 @@ export class LoginDialogComponent {
       // Destruct value object and check if there is a value
       const { email, passwordGroup: { password, confirm_password } } = value;
       const hasValue = email || password || confirm_password;
-      this.hasValue = hasValue;
+      this.formHasValue = hasValue;
     })
 
     this.login_form.valueChanges.subscribe((value) => {
@@ -69,7 +71,7 @@ export class LoginDialogComponent {
       // Destruct value object and check if there is a value
       const { email, password } = value;
       const hasValue = email || password
-      this.hasValue = hasValue
+      this.formHasValue = hasValue
     })
 
     const passwordControl = this.register_form.get('passwordGroup')?.get('password');
@@ -157,6 +159,7 @@ export class LoginDialogComponent {
     this.authMessage = '';
     this.successfulLogin = null;
     this.successfulRegister = null;
+    this.passwordVisible = false;
   }
 
   /**
@@ -169,4 +172,10 @@ export class LoginDialogComponent {
     event.stopPropagation(); // Prevent bubbling up to input field
   }
 
+  /**
+   * Toggles the visibility of the password field.
+   */
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
+  }
 }

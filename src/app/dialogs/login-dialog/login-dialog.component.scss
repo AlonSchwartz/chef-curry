@@ -29,6 +29,16 @@
         mat-form-field {
             display: flex;
         }
+
+        mat-checkbox {
+            margin-left: -9px;
+        }
+
+        .visibility {
+            vertical-align: bottom;
+            cursor: pointer;
+        }
+
     }
 
     .login_form {
@@ -39,10 +49,13 @@
         mat-error {
             font-size: 0.9em;
             margin-bottom: 1em;
-
             max-width: 100%;
             /* Limit the width of the error message container */
             white-space: normal;
+        }
+
+        mat-icon {
+            cursor: pointer;
         }
     }
 
@@ -64,7 +77,6 @@
         margin: 1vh;
         text-align: center;
     }
-
 
 }
 
