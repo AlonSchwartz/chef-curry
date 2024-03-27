@@ -4,8 +4,6 @@ export function strongPasswordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const password = control.value;
 
-        //RIGHT NOW, IT DOESNT CHECK FOR SPACES IN THE PASSWORD.
-
         //In case there is no password, trigger all validation errors
         if (!password) {
             return {
