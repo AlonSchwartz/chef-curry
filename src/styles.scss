@@ -1,59 +1,22 @@
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-// Plus imports for other components in your app.
 
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
 @include mat.core();
 
 @import '@angular/material/theming';
 @import '/src/themes/curry-theme.scss';
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-
 $chef-curry-primary: mat-palette($curry-palette);
 $chef-curry-accent: mat-palette($curry-palette-accent, 700, A100, A400);
-
-
-
-//$chef-curry-primary: mat.define-palette(mat.$purple-palette, 500);  /////////
-//$chef-curry-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);///////////
-
-// The warn palette is optional (defaults to red).
 $chef-curry-warn: mat.define-palette(mat.$red-palette);
 
-// Create the theme object. A theme consists of configurations for individual
-// theming systems such as "color" or "typography".
+// Creating the theme object
 $chef-curry-theme: mat.define-light-theme((color: (primary: $chef-curry-primary,
         accent: $chef-curry-accent,
         warn: $chef-curry-warn,
       )));
 
-/*
-$chef-curry-theme: mat.define-dark-theme((color: (primary: $chef-curry-primary,
-        accent: $chef-curry-accent,
-        warn: $chef-curry-warn,
-      )));
-      */
-
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
+// Including theme styles for core and each component used in your app
 @include mat.all-component-themes($chef-curry-theme);
-
-//@include angular-material-color($chef-curry-theme);
-
-/* You can add global styles to this file, and also import other style files */
-/*
-@import url('https://fonts.googleapis.com/css2?family=Fasthand&display=swap');
-
-
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Delicious+Handrawn&display=swap');
-*/
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
@@ -66,12 +29,6 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto", "Segoe UI", -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-
-  //font-family: 'Amatic SC', cursive;
-  //font-family: 'Delicious Handrawn', cursive;
-
-  // --backgroundHeight: 200px; 
-
 }
 
 * {
