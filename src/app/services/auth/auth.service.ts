@@ -115,7 +115,8 @@ export class AuthService {
         console.log(error.error.message)
         message = error.error.message;
       }
-      //My backend is designed to return an error as "error.error.message". if its not exists, and there is an error - that means that backend is unavailable
+      // The reason for "error.error" is that we are getting an error from the http request, and inside of it there is the server error.
+      // If its not exists, it means that the server is unavailable.
       else {
         message = "Communication error.";
       }
@@ -124,7 +125,7 @@ export class AuthService {
         successfull: false
       }
       console.log(error)
-      // Let the app keep running by returning an empty result.
+      // Let the app keep running by returning a result.
       return of(msg as T);
     };
   }

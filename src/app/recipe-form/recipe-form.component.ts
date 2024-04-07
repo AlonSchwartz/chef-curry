@@ -10,6 +10,7 @@ import { ChefMessagesComponent } from '../dialogs/chef-messages/chef-messages.co
 import { LoginDialogComponent } from '../dialogs/login-dialog/login-dialog.component';
 import { AuthService } from '../services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Recipe } from '../interfaces/recipe.interface';
 
 @Component({
   selector: 'app-recipe-form',
@@ -190,13 +191,20 @@ export class RecipeFormComponent implements AfterViewInit {
       "ingredients": ingredients
     }
 
-    this.recipeMaker.createRecipe(recipeReq).subscribe((res: Object) => {
+    this.recipeMaker.createRecipe(recipeReq).subscribe((res: Recipe | string) => {
       this.isCreating = false;
-      if (res) {
+
+      let validResponse = (typeof res === 'object') && (res != null)
+
+      if (validResponse) {
         this.router.navigate(['viewRecipe'])
       }
       else {
-        this.dialog.open(NotFoundComponent, {})
+        this.dialog.open(NotFoundComponent, {
+          data: {
+            errorMessage: res
+          }
+        })
       }
     })
   }

@@ -15,7 +15,6 @@ import { Recipe } from '../interfaces/recipe.interface';
 })
 export class RecipeComponent {
 
-  someData: string | null = '';
   recipe: Recipe | undefined;
   isFavorite: boolean = false;
   loggedIn = this.auth.getLoggedInSignal();

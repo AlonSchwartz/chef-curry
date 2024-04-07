@@ -136,11 +136,18 @@ export class RecipeMakerService {
 
       console.error(`${operation} failed.`);
       console.log(error)
-      console.log(result)
 
-      let msg = null
-      // Let the app keep running by returning an empty result.
-      return of(msg as T);
+      let message = ''
+      if (error.error.message) {
+        console.log(error.error.message)
+        message = error.error.message;
+      }
+      else {
+        message = "Communication error.";
+      }
+
+      // Let the app keep running by returning a result.
+      return of(message as T);
     };
   }
 
