@@ -122,7 +122,7 @@ export class AuthService {
       }
       let msg = {
         message: message,
-        successfull: false
+        successful: false
       }
       console.log(error)
       // Let the app keep running by returning a result.
@@ -154,7 +154,7 @@ export class AuthService {
   }
 
   /**
-   * Preforming a logout
+   * Performing a logout
    */
   logout() {
     const httpOptions = {

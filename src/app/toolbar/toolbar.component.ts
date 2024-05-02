@@ -26,7 +26,7 @@ export class ToolbarComponent implements OnInit {
       this.auth.validateStoredTokens().subscribe(response => {
         console.log(response)
 
-        if (!response.successfull) {
+        if (!response.successful) {
           this.logout();
         }
       });
@@ -104,7 +104,7 @@ export class ToolbarComponent implements OnInit {
    */
   logout() {
     this.auth.logout().subscribe(response => {
-      if (response.successfull) {
+      if (response.successful) {
         this.router.navigate(['/'])
       }
       else {

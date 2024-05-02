@@ -103,7 +103,7 @@ export class LoginDialogComponent {
         this.auth.register(email, password).subscribe(res => {
           this.isAuthenticating = false;
 
-          if (res.succussfull) {
+          if (res.successful) {
             this.successfulRegister = true;
             this.hasAccount = true;
             this.authMessage = res.title;
@@ -132,8 +132,7 @@ export class LoginDialogComponent {
     if (email && password) {
       this.auth.login(email, password).subscribe(res => {
         this.isAuthenticating = false;
-
-        if (res.succussfull) {
+        if (res.successful) {
           this.successfulLogin = true;
           this.dialogRef.close()
           this._snackBar.open("You're now logged in", "", {
