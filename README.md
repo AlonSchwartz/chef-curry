@@ -1,27 +1,34 @@
-# ChefCurry
+# Chef Curry  👨‍🍳 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.1.
+<img src ="https://github.com/AlonSchwartz/chef-curry/blob/master/src/assets/logo.png?raw=true" width="250" height="300" />
 
-## Development server
+### Chef Curry is a web application that allows you to create delicious curry-based dishes using the power of AI.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+###  Built with Angular 16 and Angular Material.
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Main features
+* <b>AI-Powered Recipe Generation:</b> Leverage the capabilities of artificial intelligence to generate unique and flavorful curry recipes tailored to your preferences.
+* <b>Ingredient Selection:</b> Choose from a vast array of ingredients to build your curry dish, including vegetables, proteins and carbohydrates.
+* Limit the chef to certain ingrediets, or give him a free hand - the option is yours.
+* <b>Step-by-Step Instructions:</b> Follow clear and concise step-by-step instructions to ensure your curry turns out perfectly every time.
+* <b>Recipe Sharing:</b> Easily share your recipe via Whatsapp or email.
+* <b>Favorites List:</b> Save your recipe into favoirte list for easier access (registered users only)
 
-## Build
+### Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+This is a web project, but if you want to run it locally, follow these instructions:
 
-## Running unit tests
+1. Clone the repository: ``git clone https://github.com/AlonSchwartz/chef-curry.git``
+2. Navigate to the project directory: ``cd chef-curry``
+3. Install dependencies: ``npm install``
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Usage
+1. Start the development server: ``ng serve``
+2. Open your web browser and navigate to http://localhost:4200
+3. Explore the application and start creating your own curry dishes!
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### For the backend project repository, please view: https://github.com/AlonSchwartz/chef-curry-backend
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
