@@ -151,7 +151,7 @@ export class RecipeComponent {
    * Opens share bottom sheet
    */
   shareRecipe() {
-    const link = 'https://chef-curry-umber.vercel.app/viewRecipe/' + this.recipe?.shareableHash;
+    const link = 'https://chef-curry-ai.vercel.app/viewRecipe/' + this.recipe?.shareableHash;
 
     this._bottomSheet.open(ShareMenuComponent, {
       data: { url: link }
