@@ -22,7 +22,6 @@ export class AuthService {
 
     let email = this.userData.getUserEmail();
     if (email) {
-      console.warn(email)
       this.updateLoginStatus(true);
       this.userEmail = email;
       this.userData.loadFavoriteRecipes()
@@ -85,11 +84,9 @@ export class AuthService {
 
     return this.http.post(this.serverAddress + '/api/auth/login', authData, httpOptions).pipe(
       map((res: any) => {
-        // console.log(res)
         return res as { recipes: Recipe[], successful: boolean, title: string }
       }),
       tap((res) => {
-        console.log(res)
         const userData = { recipes: res.recipes, email: email }
         this.userData.saveUserData(userData)
         this.updateLoginStatus(true)

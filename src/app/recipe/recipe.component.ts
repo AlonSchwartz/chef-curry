@@ -91,11 +91,9 @@ export class RecipeComponent {
         this.isFavorite = true;
 
         if (recipeId) {
-          console.warn("recipeId")
           this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
         }
         else if (recipe) {
-          console.warn("just recipe")
           this.recipe = recipe;
         }
       }
@@ -110,7 +108,6 @@ export class RecipeComponent {
           if (res) {
             this.recipe = res;
             this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
-            console.log("favorite? " + this.isFavorite)
           }
         })
       }
@@ -136,6 +133,9 @@ export class RecipeComponent {
         if (res) {
           this.isFavorite = true;
           this.fav_title = "In Favorites"
+          this._snackBar.open("Added to favorites!", '', {
+            duration: 1500
+          })
         }
         else {
           //create a message to notify the user that saving have failed.

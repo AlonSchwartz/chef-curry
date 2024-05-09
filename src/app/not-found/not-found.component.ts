@@ -17,7 +17,6 @@ export class NotFoundComponent {
     if (this.route.snapshot.data['fromRoute']) {
       this.errorMessage = "It seems we can't find this page. Please try again."
     }
-    console.log(this.data)
     if (this.data?.errorMessage) {
       this.errorMessage = "Seems like " + this.data.errorMessage + " Please try again."
     }

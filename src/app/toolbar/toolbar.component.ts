@@ -24,8 +24,6 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
     if (this.isLoggedIn()) {
       this.auth.validateStoredTokens().subscribe(response => {
-        console.log(response)
-
         if (!response.successful) {
           this.logout();
         }

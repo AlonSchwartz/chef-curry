@@ -115,7 +115,6 @@ export class RecipeMakerService {
 
     return this.http.post(this.serverAddress + '/api/recipes/save', userData, httpOptions).pipe(
       tap(res => {
-        console.log(res)
         this.userData.updateFavoriteRecipes(recipe)
       }),
       catchError(this.handleError<any>('favorite'))

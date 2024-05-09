@@ -45,7 +45,6 @@ export class FavoriteRecipesComponent {
    * @param recipe the recipe to navigate to
    */
   navigateToRecipe(recipe: Recipe) {
-    console.log(recipe)
     const navigationExtras = {
       state: {
         recipe: recipe
