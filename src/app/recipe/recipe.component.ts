@@ -18,7 +18,7 @@ export class RecipeComponent {
   recipe: Recipe | undefined;
   isFavorite: boolean = false;
   loggedIn = this.auth.getLoggedInSignal();
-  fav_title: string = "";
+  fav_title: string = "You have to be logged in";
   isLoading: boolean = true;
 
 
@@ -45,9 +45,11 @@ export class RecipeComponent {
     private auth: AuthService, private _bottomSheet: MatBottomSheet,
     private _snackBar: MatSnackBar) {
 
-    //In case the recipe was just created
-    let recipe = this.recipeMaker.getRecipe()
-    this.recipe = recipe;
+    //In case the recipe was just created, the history state size will be just 1
+    if (Object.keys(history.state).length == 1) {
+      let recipe = this.recipeMaker.getRecipe()
+      this.recipe = recipe;
+    }
 
     if (this.recipe) {
       this.isLoading = false;
@@ -65,13 +67,8 @@ export class RecipeComponent {
           this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
         }
 
-        if (this.isFavorite) {
-          this.fav_title = "In Favorites"
-        } else {
-          this.fav_title = "Add to Favorites"
-        }
-      } else {
-        this.fav_title = "You have to be logged in"
+        this.changeFavoriteTitle(this.isFavorite)
+
       }
     })
   }
@@ -88,13 +85,13 @@ export class RecipeComponent {
         const recipe = history.state.recipe;
 
         this.isLoading = false;
-        this.isFavorite = true;
 
         if (recipeId) {
           this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
         }
         else if (recipe) {
           this.recipe = recipe;
+          this.isFavorite = true;
         }
       }
     });
@@ -108,10 +105,23 @@ export class RecipeComponent {
           if (res) {
             this.recipe = res;
             this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
+            this.changeFavoriteTitle(this.isFavorite)
           }
         })
       }
     })
+  }
+
+  /**
+   * Changes favorite button title based on boolean parameter
+   * @param isFavorite the boolean parameter
+   */
+  changeFavoriteTitle(isFavorite: boolean) {
+    if (isFavorite) {
+      this.fav_title = "In Favorites"
+    } else {
+      this.fav_title = "Add to Favorites"
+    }
   }
 
   /**
