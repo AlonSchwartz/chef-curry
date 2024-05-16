@@ -191,14 +191,12 @@ export class RecipeFormComponent implements AfterViewInit {
       "ingredients": ingredients
     }
 
-    this.recipeMaker.createRecipe(recipeReq).subscribe((res: Recipe | string) => {
+    this.recipeMaker.createRecipe(recipeReq).subscribe((res: string) => {
       this.isCreating = false;
-
-      let validResponse = (typeof res === 'object') && (res != null)
-
-      if (validResponse) {
-        this.router.navigate(['viewRecipe'])
+      if (this.isValidResponse(res)) {
+        this.router.navigate(['viewRecipe/' + res])
       }
+
       else {
         this.dialog.open(NotFoundComponent, {
           data: {
@@ -207,6 +205,17 @@ export class RecipeFormComponent implements AfterViewInit {
         })
       }
     })
+  }
+
+  /**
+   * Checks if a given response is a valid response
+   * 
+   * A valid response must be a 16-digits hexadecimal hash.
+   * @param res the response to validate
+   * @returns boolean that indicates the answer
+   */
+  isValidResponse(res: string): boolean {
+    return typeof res === 'string' && res.length === 16 && /^[a-fA-F0-9]+$/.test(res);
   }
 
   /**

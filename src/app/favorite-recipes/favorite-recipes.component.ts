@@ -50,6 +50,6 @@ export class FavoriteRecipesComponent {
         recipe: recipe
       }
     };
-    this.router.navigate(['viewRecipe'], navigationExtras);
+    this.router.navigate(['viewRecipe/' + recipe.shareableHash], navigationExtras);
   }
 }

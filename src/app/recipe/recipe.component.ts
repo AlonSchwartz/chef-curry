@@ -45,19 +45,7 @@ export class RecipeComponent {
     private auth: AuthService, private _bottomSheet: MatBottomSheet,
     private _snackBar: MatSnackBar) {
 
-    //In case the recipe was just created, the history state size will be just 1
-    if (Object.keys(history.state).length == 1) {
-      let recipe = this.recipeMaker.getRecipe()
-      this.recipe = recipe;
-    }
-
-    if (this.recipe) {
-      this.isLoading = false;
-    }
-
-    else {
-      this.loadRecipeByUrl()
-    }
+    this.loadRecipeByUrl()
 
     //In case that signal value of loggedIn have been changed
     effect(() => {
@@ -81,15 +69,11 @@ export class RecipeComponent {
 
       // If we got here from favorites or homepage, there will be 2 elements in history state
       if (Object.keys(history.state).length > 1) {
-        const recipeId = history.state.recipeId;
         const recipe = history.state.recipe;
 
         this.isLoading = false;
 
-        if (recipeId) {
-          this.recipe = this.recipeMaker.getExampleRecipes(recipeId)
-        }
-        else if (recipe) {
+        if (recipe) {
           this.recipe = recipe;
           this.isFavorite = true;
         }
@@ -98,16 +82,19 @@ export class RecipeComponent {
 
     //In order to load a recipe by url with hash
     this.route.params.subscribe(params => {
-      const paramId = params['id']
-      if (paramId) {
-        this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
-          this.isLoading = false;
-          if (res) {
-            this.recipe = res;
-            this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
-            this.changeFavoriteTitle(this.isFavorite)
-          }
-        })
+
+      if (!this.recipe) {
+        const paramId = params['id']
+        if (paramId) {
+          this.recipeMaker.getRecipeByHash(paramId).subscribe(res => {
+            this.isLoading = false;
+            if (res) {
+              this.recipe = res;
+              this.isFavorite = this.recipeMaker.checkIfFavorite(this.recipe.id)
+              this.changeFavoriteTitle(this.isFavorite)
+            }
+          })
+        }
       }
     })
   }

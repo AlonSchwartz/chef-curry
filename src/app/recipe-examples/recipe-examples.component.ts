@@ -15,12 +15,7 @@ export class RecipeExamplesComponent {
    * @param exampleRecipeId the id of the recipe
    */
   navigateToRecipe_byId(exampleRecipeId: number) {
-    const navigationExtras = {
-      state: {
-        recipeId: exampleRecipeId
-      }
-    };
-    this.router.navigate(['viewRecipe'], navigationExtras);
+    this.router.navigate(['viewRecipe/example-' + exampleRecipeId]);
   }
 
 }

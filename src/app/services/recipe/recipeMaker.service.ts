@@ -23,7 +23,7 @@ export class RecipeMakerService {
   /**
    * Sends a request to the server in order to create a recipe
    * @param recipeRequest the recipe request
-   * @returns an Observable that contains the recipe
+   * @returns an Observable that contains the hash value of the new recipe
    */
   createRecipe(recipeRequest: object) {
 
@@ -33,12 +33,6 @@ export class RecipeMakerService {
     };
 
     return this.http.post(this.serverAddress + '/api/recipes/', recipeRequest, httpOptions).pipe(
-      map((res: any) => {
-        return res as Recipe
-      }),
-      tap(res => {
-        this.recipe = res;
-      }),
       catchError(this.handleError<any>('create recipe')
       ))
   }
