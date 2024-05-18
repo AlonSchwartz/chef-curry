@@ -4,6 +4,8 @@
 
 ### Chef Curry is a web application that allows you to create delicious curry-based dishes using the power of AI.
 
+### It's a personal project which I started in order to get deeper knowledge and practical experience with Web development and getting more familar with AI engines/API. I added two of my hobbies - Basketball and Cooking, and I ended up with a project that is much larger than my first intent, gaining more experience than I thought, and having fun during the entire journey.
+
 ###  Built with Angular 16 and Angular Material.
 
 ---
