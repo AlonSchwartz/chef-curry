@@ -27,9 +27,10 @@ This is a web project, but if you want to run it locally, follow these instructi
 3. Install dependencies: ``npm install``
 
 ### Usage
-1. Start the development server: ``ng serve``
-2. Open your web browser and navigate to http://localhost:4200
-3. Explore the application and start creating your own curry dishes!
+1. Start the frontend development server: ``ng serve``
+2. Make sure that the backend server is running.
+3. Open your web browser and navigate to http://localhost:4200
+4. Explore the application and start creating your own curry dishes!
 
 
 ### For the backend project repository, please view: https://github.com/AlonSchwartz/chef-curry-backend
