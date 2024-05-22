@@ -46,11 +46,12 @@
             margin-top: 10px;
             display: grid;
             grid-template-columns: 1fr 2fr;
+            gap: 16px;
 
             .auth-actions {
                 flex: 1;
                 display: flex;
-                justify-content: space-between;
+                gap: 8px;
             }
         }
     }
