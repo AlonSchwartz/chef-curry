@@ -1,5 +1,7 @@
 <div class="toolbar">
-    <img width="35" src="assets/logocopy.avif" [routerLink]="''">
+    <a class="toolbar-logo" aria-label="toolbar-logo" href="/">
+        <img width="35" src="assets/logocopy.avif">
+    </a>
     <div class="spacer"></div>
     <span class="login_btn" *ngIf="!isLoggedIn()" (click)="openAuthDialog()">Login</span>
 
