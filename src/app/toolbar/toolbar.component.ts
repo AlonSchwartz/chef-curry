@@ -41,6 +41,11 @@ export class ToolbarComponent implements OnInit {
 
     // Handles in case of clicks outside the dialog
     dialogRef.backdropClick().subscribe(() => {
+      if (dialogRef.componentInstance.successfulRegister) {
+        dialogRef.close()
+        return;
+      }
+
       if (dialogRef.componentInstance.formHasValue) {
         this.askForConfirmation().then(toClose => {
 
@@ -56,6 +61,11 @@ export class ToolbarComponent implements OnInit {
 
     // Handles in case of ESC button pressed
     dialogRef.keydownEvents().subscribe(event => {
+      if (dialogRef.componentInstance.successfulRegister) {
+        dialogRef.close()
+        return;
+      }
+
       if (event.key === "Escape") {
         if (dialogRef.componentInstance.formHasValue) {
           this.askForConfirmation().then(toClose => {
